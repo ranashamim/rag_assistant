@@ -1,0 +1,52 @@
+[
+    {
+        "chunk_id": "137d3676-0a31-4b9f-9ef9-43527ef75b23",
+        "text": "Well-being is what is intrinsically good for a person, indicating how well their life is going. In the broadest sense, it is the balance of all positive and negative aspects. More narrowly, it refers only to positive degrees and contrasts with ill-being, which denotes negative ones. Researchers discuss types by how they are measured and to whom they belong, distinguishing subjective from objective well-being, and individual from community well-being.",
+        "source": "doc1.txt",
+        "page": 0,
+        "chunk_index": 0,
+        "method": "punctuation",
+        "char_count": 454,
+        "word_count": 69
+    },
+    {
+        "chunk_id": "9124d055-7244-4fb8-aa27-d9a88c821d3d",
+        "text": "long, distinguishing subjective from objective well-being, and individual from community well-being. Hedonism and desire theory disagree about whether the balance of pleasure over pain or desire satisfaction is the source of well-being. Objective list theories hold that diverse elements are responsible. Often-discussed contributing factors are emotions, life satisfaction, achievement, finding meaning, interpersonal relationships, and health.",
+        "source": "doc1.txt",
+        "page": 0,
+        "chunk_index": 1,
+        "method": "punctuation",
+        "char_count": 445,
+        "word_count": 55
+    },
+    {
+        "chunk_id": "51e40ff5-bd2c-4113-9947-e52dd978e889",
+        "text": " emotions, life satisfaction, achievement, finding meaning, interpersonal relationships, and health. As a central goal of many individual and societal endeavors, well-being is relevant to many fields, including philosophy, psychology,\r\nDracaena cinnabari, also known as the Socotra dragon tree or the dragon blood tree, is a species of dragon tree native to the island of Socotra, part of Yemen, in the Arabian Sea.",
+        "source": "doc1.txt",
+        "page": 0,
+        "chunk_index": 2,
+        "method": "punctuation",
+        "char_count": 415,
+        "word_count": 62
+    },
+    {
+        "chunk_id": "95fcc353-4695-4957-8368-a56dd66aa827",
+        "text": "ree, is a species of dragon tree native to the island of Socotra, part of Yemen, in the Arabian Sea. Growing to a height of 9 metres (30 ft), it develops a distinctive umbrella-shaped crown adapted to the arid conditions of its habitat. The tree produces a dark-red resin known as dragon's blood, historically used as a dye, medicine and varnish.",
+        "source": "doc1.txt",
+        "page": 0,
+        "chunk_index": 3,
+        "method": "punctuation",
+        "char_count": 346,
+        "word_count": 61
+    },
+    {
+        "chunk_id": "f1931012-c34a-4d35-b264-e57be6f71dd2",
+        "text": "produces a dark-red resin known as dragon's blood, historically used as a dye, medicine and varnish. The species is threatened by overgrazing, habitat degradation and increasing aridity, and is classified as a vulnerable species by the International Union for Conservation of Nature. This D. cinnabari tree was photographed on the Diksam Plateau on Socotra.\r\n\r\nPhotograph credit: Alex38",
+        "source": "doc1.txt",
+        "page": 0,
+        "chunk_index": 4,
+        "method": "punctuation",
+        "char_count": 386,
+        "word_count": 57
+    }
+]
