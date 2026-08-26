@@ -1,0 +1,92 @@
+[
+    {
+        "chunk_id": "91eff137-2e26-4e20-9c2f-5558037ca548",
+        "text": "Dr Tomas Streyer looked around the control room at his team of scientists and engineers. He was pretending to be calm, but he was both excited and terrified.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 0,
+        "method": "punctuation",
+        "char_count": 157,
+        "word_count": 28
+    },
+    {
+        "chunk_id": "04b094db-1df2-4cce-b360-949597bbd8ce",
+        "text": "am of scientists and engineers. He was pretending to be calm, but he was both excited and terrified. The next few minutes would be the starting point of years more research towards understanding the secrets of how the universe began.\r\n\r\nHe looked out of the window at the beautiful blue summer sky and took a deep breath.\r\n\r\n'Ready,' he said, and pressed the first button, bringing to life the complicated computers and machines around them.\r\n\r\n'Set,' he said, and pressed the second button, switching on the huge particle accelerator that lay in a huge underground laboratory, deep beneath the towns and fields of Switzerland.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 1,
+        "method": "punctuation",
+        "char_count": 627,
+        "word_count": 104
+    },
+    {
+        "chunk_id": "d4abf177-5984-42ae-8378-288c7a674841",
+        "text": "lerator that lay in a huge underground laboratory, deep beneath the towns and fields of Switzerland. \r\n\r\n'Go,' he said, at exactly twelve o'clock, and pressed the final button.\r\n\r\nFor a second, everything went absolutely black, as if he had gone blind. Tomas cried out in shock, but the lights were already on again. Whatever that was, it was not supposed to have happened.\r\n\r\n'Everybody check the systems!' he ordered, but nothing seemed to be wrong with them.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 2,
+        "method": "punctuation",
+        "char_count": 461,
+        "word_count": 77
+    },
+    {
+        "chunk_id": "197dc6e2-ac6e-49e8-94ef-1d7deed5780a",
+        "text": "ve happened.\r\n\r\n'Everybody check the systems!' he ordered, but nothing seemed to be wrong with them. The particle accelerator was working, just as he had hoped it would. \r\n\r\n'Look outside,' said Tomas's assistant in a frightened voice.\r\n\r\nInstead of the perfect summer day of five minutes ago, the sky was darker than the blackest night.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 3,
+        "method": "punctuation",
+        "char_count": 337,
+        "word_count": 55
+    },
+    {
+        "chunk_id": "a61a4bdd-0fc9-42f7-aa2d-259a5cea6ff7",
+        "text": "\r\nInstead of the perfect summer day of five minutes ago, the sky was darker than the blackest night. Not only had the sun disappeared, there weren't even any stars.\r\n\r\nPeople were shouting and screaming, calling their families on the telephone, afraid they had all suddenly disappeared too. Tomas ignored their noise. He sat at the main computer and started reading the data from his experiment. Nothing there explained what was happening.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 4,
+        "method": "punctuation",
+        "char_count": 439,
+        "word_count": 71
+    },
+    {
+        "chunk_id": "f5bf6ef1-187a-408c-a005-e0b510447ae6",
+        "text": "mputer and started reading the data from his experiment. Nothing there explained what was happening. He rushed for the exit, his team running behind him until they were all outside the laboratory building. \r\n\r\nEveryone else in the research centre was outside, panicking and confused.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 5,
+        "method": "punctuation",
+        "char_count": 283,
+        "word_count": 44
+    },
+    {
+        "chunk_id": "e390e4d4-330c-4ef9-ad10-eae853f392a5",
+        "text": "e laboratory building. \r\n\r\nEveryone else in the research centre was outside, panicking and confused. They were using the screens and torches on their mobile phones to see where they were going, waving them around like giant fireflies.\r\n\r\nSeveral people got in their cars and turned on the headlights, driving them to the entrance to make a small area of brightness in the dark for everybody to crowd together.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 6,
+        "method": "punctuation",
+        "char_count": 409,
+        "word_count": 68
+    },
+    {
+        "chunk_id": "18ecc7ef-a096-4100-924c-654d93b158d5",
+        "text": "them to the entrance to make a small area of brightness in the dark for everybody to crowd together. When the automatic street lights turned on, some people cheered, but most of them were still frightened.\r\n\r\nThen, almost twenty minutes after Tomas had started his experiment, without warning the sun reappeared in the sky, warm and yellow, and the black sky turned blue again. Everyone started laughing and dancing around, and Tomas breathed a sigh of relief.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 7,
+        "method": "punctuation",
+        "char_count": 460,
+        "word_count": 77
+    },
+    {
+        "chunk_id": "268f8959-ccc0-4f13-852e-77cdaa4f9ca9",
+        "text": "urned blue again. Everyone started laughing and dancing around, and Tomas breathed a sigh of relief. \r\n\r\nBut later, hours later, when the real night fell again, no one was celebrating. Because although the moon rose as usual, there was not a star to be seen.",
+        "source": "test.txt",
+        "page": 0,
+        "chunk_index": 8,
+        "method": "punctuation",
+        "char_count": 258,
+        "word_count": 45
+    }
+]

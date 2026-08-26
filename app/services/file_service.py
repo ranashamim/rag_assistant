@@ -59,15 +59,15 @@ async def extract_text(file: UploadFile) -> str:
         detail="Only .txt and .pdf files are supported."
     )
 
-async def save_chunks_to_file(chunks: list):
+def save_chunks_to_file(chunks: list):
     json_str = json.dumps(chunks, indent=4)
-    with open("data/chunks/chunks.json", "w", encoding="utf-8") as f:
+    with open("app/data/chunks/chunks.json", "w", encoding="utf-8") as f:
         f.write(json_str)
     
     return "data is written."
 
-async def read_chunks_file():
-    with open("data/chunks/chunks.json", "r", encoding="utf-8") as f:
+def read_chunks_file():
+    with open("app/data/chunks/chunks.json", "r", encoding="utf-8") as f:
         data = json.load(f)
 
     return data

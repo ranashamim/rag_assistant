@@ -1,5 +1,5 @@
 from fastapi import FastAPI, UploadFile, File
-from routers.documents import router as docs_router
+from app.routers.documents import router as docs_router
 
 app = FastAPI()
 
