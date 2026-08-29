@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI
 from app.routers.documents import router as docs_router
 from app.routers.retrieval_router import router as query_router
 

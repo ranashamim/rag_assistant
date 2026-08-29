@@ -29,7 +29,8 @@ async def to_db_vector(file, chunking_method):
             PointStruct(
                 id=chunk["chunk_id"],
                 vector=embedding,
-                payload={
+                payload={      
+                    "method": chunking_method,
                     "text": chunk["text"],
                     "source": chunk["source"],
                     "chunk_id": chunk["chunk_id"]
