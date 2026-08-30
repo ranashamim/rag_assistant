@@ -2,12 +2,11 @@ import re
 import uuid
 
 
-
 # =====================================
 # Utility
 # =====================================
 
-def build_chunk_objects(chunks, source, page, method):
+def build_chunk_objects(chunks, page_number, source, file_type, method):
     output = []
 
     for i, chunk in enumerate(chunks):
@@ -18,7 +17,8 @@ def build_chunk_objects(chunks, source, page, method):
             "chunk_id": str(uuid.uuid4()),
             "text": chunk,
             "source": source,
-            "page": page,
+            "file_type": file_type,
+            "page_number": page_number,
             "chunk_index": i,
             "method": method
         })
@@ -330,8 +330,9 @@ def get_character_overlap(text, overlap):
 # =====================================
 def chunk_document(
     text,
+    page_number,
+    file_type,
     source="unknown",
-    page=0,
     method="semantic",
     chunk_size=500,
     overlap=100,
@@ -379,7 +380,9 @@ def chunk_document(
 
     return build_chunk_objects(
         chunks,
+        page_number,
         source,
-        page,
+        file_type,
         method
     )
+

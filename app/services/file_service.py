@@ -3,16 +3,10 @@ from pypdf import PdfReader
 import io
 import json
 
-async def extract_text(file: UploadFile) -> str:
-    """
-    Extract text from uploaded TXT or PDF files.
+from app.models.models import ParsedDocumentModel
 
-    Args:
-        file: FastAPI UploadFile
-
-    Returns:
-        str: Extracted text
-    """
+async def parse_document(file: UploadFile) -> ParsedDocumentModel:
+    docs = {}
 
     if not file.filename:
         raise HTTPException(
@@ -25,7 +19,16 @@ async def extract_text(file: UploadFile) -> str:
     # TXT files
     if file.filename.lower().endswith(".txt"):
         try:
-            return content.decode("utf-8")
+            docs['filename'] = file.filename
+            docs['file_type'] = 'text'
+            docs['pages'] = [{'page_number': 1, 'text': content.decode("utf-8")}]
+
+            return ParsedDocumentModel(
+                filename= docs['filename'],
+                file_type=docs['file_type'],
+                pages=docs['pages']
+            )
+        
         except UnicodeDecodeError:
             raise HTTPException(
                 status_code=400,
@@ -35,17 +38,22 @@ async def extract_text(file: UploadFile) -> str:
     # PDF files
     elif file.filename.lower().endswith(".pdf"):
         try:
+            docs['filename'] = file.filename
+            docs['file_type'] = 'pdf'
+            docs['pages'] = []
+            
             pdf = PdfReader(io.BytesIO(content))
 
-            text = ""
-
-            for page in pdf.pages:
+            for i, page in enumerate(pdf.pages, start=1):
                 page_text = page.extract_text()
+                docs['pages'].append({'page_number': i, 'text': page_text})
+                           
 
-                if page_text:
-                    text += page_text + "\n"
-
-            return text
+            return ParsedDocumentModel(
+                filename= docs['filename'],
+                file_type=docs['file_type'],
+                pages=docs['pages']
+            )
 
         except Exception as e:
             raise HTTPException(
