@@ -6,7 +6,7 @@ import uuid
 # Utility
 # =====================================
 
-def build_chunk_objects(chunks, page_number, source, file_type, method):
+def build_chunk_objects(chunks, page_number, source, file_type, method, document_id):
     output = []
 
     for i, chunk in enumerate(chunks):
@@ -20,7 +20,8 @@ def build_chunk_objects(chunks, page_number, source, file_type, method):
             "file_type": file_type,
             "page_number": page_number,
             "chunk_index": i,
-            "method": method
+            "method": method, 
+            "document_id": document_id
         })
 
     return output
@@ -332,6 +333,7 @@ def chunk_document(
     text,
     page_number,
     file_type,
+    document_id,
     source="unknown",
     method="semantic",
     chunk_size=500,
@@ -383,6 +385,7 @@ def chunk_document(
         page_number,
         source,
         file_type,
-        method
+        method,
+        document_id
     )
 
