@@ -1,6 +1,9 @@
 import re
 import uuid
 
+from app.config.settings import settings
+
+from app.models.enums import ChunkMethod
 
 # =====================================
 # Utility
@@ -335,15 +338,25 @@ def chunk_document(
     file_type,
     document_id,
     source="unknown",
-    method="semantic",
-    chunk_size=500,
-    overlap=100,
-    overlap_sentences=1,
+    method=None,
+    chunk_size=None,
+    overlap=None,
+    overlap_sentences=None,
 ):
+    
+    method = method or settings.chunk_method
+    chunk_size = chunk_size or settings.chunk_size
+    overlap = overlap or settings.chunk_overlap
+    overlap_sentences = (
+        overlap_sentences
+        if overlap_sentences is not None
+        else settings.chunk_overlap_sentences
+    )
+
     if not text or not text.strip():
         return []
 
-    if method == "fixed":
+    if method == ChunkMethod.FIXED:
 
         chunks = fixed_size_chunk(
             text,
@@ -351,7 +364,7 @@ def chunk_document(
             overlap
         )
 
-    elif method == "punctuation":
+    elif method == ChunkMethod.PUNCTUATION:
 
         chunks = punctuation_chunk(
             text,
@@ -359,7 +372,7 @@ def chunk_document(
             overlap_sentences
         )
 
-    elif method == "recursive":
+    elif method == ChunkMethod.RECURSIVE:
 
         chunks = recursive_chunk(
             text,
@@ -367,12 +380,12 @@ def chunk_document(
             overlap
         )
 
-    elif method == "semantic":
+    elif method == ChunkMethod.SEMANTIC:
         from app.services.semantic_chunking_service import semantic_chunk
         
         chunks = semantic_chunk(
                 text,
-                percentile=25
+                percentile=settings.semantic_chunk_percentile
             )
         
     else:

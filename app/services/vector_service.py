@@ -7,10 +7,14 @@ from app.services.chunking_service import chunk_document
 from app.services.embeddings_service import embed_chunks
 from app.services.file_service import parse_document
 
+from app.config.settings import settings
+
+
 client = QdrantClient(
-    host="localhost",
-    port=6333
+    host= settings.qdrant_host,
+    port= settings.qdrant_port
 )
+
 
 async def to_db_vector(file, chunking_method):
     document_id = str(uuid.uuid4())
@@ -45,7 +49,7 @@ async def to_db_vector(file, chunking_method):
             )
         )
 
-    client.upsert(collection_name="documents", points= points)
+    client.upsert(settings.qdrant_collection_name, points= points)
 
     return {
         "chunks_stored": len(points)

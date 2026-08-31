@@ -1,15 +1,18 @@
 from fastapi import APIRouter, File, UploadFile
+
 from app.services.chunking_service import chunk_document
 from app.services.file_service import parse_document, read_chunks_file
 from app.services.semantic_chunking_service import semantic_chunk
 from app.services.vector_service import to_db_vector
+
+from app.models.enums import ChunkMethod
 
 router = APIRouter(prefix="/docs", tags=["Document"])
 
 
 @router.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
-    vector = await to_db_vector(file, "semantic")
+    vector = await to_db_vector(file, ChunkMethod.SEMANTIC)
     return vector
 
 
@@ -48,7 +51,7 @@ async def upload_file(file: UploadFile = File(...)):
     chunks = chunk_document(
             text=text,
             source=file.filename,
-            method="semantic"
+            method=ChunkMethod.SEMANTIC
         )
 
     return chunks

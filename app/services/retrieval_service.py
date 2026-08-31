@@ -3,15 +3,20 @@ from qdrant_client import QdrantClient
 from app.services.embeddings_service import embed_chunks
 
 
-client = QdrantClient(host="localhost",port=6333)
+from app.config.settings import settings
 
+
+client = QdrantClient(
+    host= settings.qdrant_host,
+    port= settings.qdrant_port
+)
 
 async def retrieve_chunks(query: str,limit: int = 3):
 
     query_embedding = embed_chunks([query])[0]
 
     results = client.query_points(
-        collection_name="documents",
+        collection_name= settings.qdrant_collection_name,
         query=query_embedding,
         limit=limit
     )

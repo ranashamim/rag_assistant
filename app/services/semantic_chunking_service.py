@@ -3,10 +3,11 @@ from app.services.chunking_service import recursive_chunk
 import numpy as np
 import re
 
+from app.config.settings import settings
 
-MODEL_NAME = "intfloat/multilingual-e5-large"
 
-model = SentenceTransformer(MODEL_NAME)
+model = SentenceTransformer(settings.embedding_model_name)
+
 
 def split_sentences(text):
     if not text or not text.strip():
