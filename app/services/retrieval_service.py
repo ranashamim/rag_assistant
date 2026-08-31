@@ -21,6 +21,7 @@ async def retrieve_chunks(query: str,limit: int = 3):
         limit=limit
     )
 
+
     return [
         {
             "score": result.score,
