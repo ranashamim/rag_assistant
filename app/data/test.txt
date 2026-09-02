@@ -1,29 +1,87 @@
-Dr Tomas Streyer looked around the control room at his team of scientists and engineers. He was pretending to be calm, but he was both excited and terrified. The next few minutes would be the starting point of years more research towards understanding the secrets of how the universe began.
+# Retrieval-Augmented Generation
 
-He looked out of the window at the beautiful blue summer sky and took a deep breath.
+Retrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context.
 
-'Ready,' he said, and pressed the first button, bringing to life the complicated computers and machines around them.
+## Why RAG is useful
 
-'Set,' he said, and pressed the second button, switching on the huge particle accelerator that lay in a huge underground laboratory, deep beneath the towns and fields of Switzerland. 
+Large language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information. A company, for example, may have thousands of internal documents containing policies, technical documentation, customer information, and operational procedures. Sending all of these documents to the language model for every question would be expensive and inefficient.
 
-'Go,' he said, at exactly twelve o'clock, and pressed the final button.
+RAG addresses this problem by dividing documents into smaller pieces called chunks. These chunks are converted into vector representations called embeddings and stored in a vector database. When a user asks a question, the system converts the question into an embedding and searches for chunks that are semantically similar to the query.
 
-For a second, everything went absolutely black, as if he had gone blind. Tomas cried out in shock, but the lights were already on again. Whatever that was, it was not supposed to have happened.
+## Document processing
 
-'Everybody check the systems!' he ordered, but nothing seemed to be wrong with them. The particle accelerator was working, just as he had hoped it would.  
+The first stage of a RAG pipeline is document ingestion. During ingestion, the system receives a document and extracts its content. A PDF may contain multiple pages, while a plain text file may be treated as a single logical page. The extracted content should preserve useful metadata such as the filename, document type, and page number.
 
-'Look outside,' said Tomas's assistant in a frightened voice.
+Consider a technical manual that contains information about installing a database server. The installation procedure may begin on one page and continue on the next page. If the document-processing system loses page information, the retrieval system may still find the correct text, but the final answer may not be able to provide a useful citation or location for the retrieved information.
 
-Instead of the perfect summer day of five minutes ago, the sky was darker than the blackest night. Not only had the sun disappeared, there weren't even any stars.
+## Chunking
 
-People were shouting and screaming, calling their families on the telephone, afraid they had all suddenly disappeared too. Tomas ignored their noise. He sat at the main computer and started reading the data from his experiment. Nothing there explained what was happening. He rushed for the exit, his team running behind him until they were all outside the laboratory building. 
+Chunking is the process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information.
 
-Everyone else in the research center was outside, panicking and confused. They were using the screens and torches on their mobile phones to see where they were going, waving them around like giant fireflies.
+A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk.
 
-Several people got in their cars and turned on the headlights, driving them to the entrance to make a small area of brightness in the dark for everybody to crowd together. When the automatic street lights turned on, some people cheered, but most of them were still frightened.
+Sentence-based chunking tries to preserve complete sentences. This can produce more natural chunks because sentences are usually meaningful linguistic units. However, punctuation-based approaches can fail when documents contain unusual formatting, abbreviations, tables, or sentences that are extremely long.
 
-Then, almost twenty minutes after Tomas had started his experiment, without warning the sun reappeared in the sky, warm and yellow, and the black sky turned blue again. Everyone started laughing and dancing around, and Tomas breathed a sigh of relief. 
+Recursive chunking uses a hierarchy of separators. It may first attempt to split text by paragraphs, then by lines, then by sentences, and finally by spaces. This approach attempts to preserve larger semantic structures before falling back to smaller units.
 
-But later, hours later, when the real night fell again, no one was celebrating. Because although the moon rose as usual, there was not a star to be seen.
+Semantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly.
 
-what is AI? AI is the most popular topic these days.
+## Embeddings
+
+After chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space. Texts with similar meanings should produce vectors that are relatively close to one another.
+
+For example, the question "How can I install the database?" may be semantically similar to a document chunk saying "The database installation process begins by downloading the server package." The words are not identical, but the concepts are related.
+
+The quality of an embedding model affects retrieval performance. A model that works well for general English text may not perform equally well on legal documents, medical terminology, source code, or multilingual content. Therefore, embedding models should be evaluated using representative queries and documents rather than selected only because they are popular.
+
+## Vector databases
+
+A vector database stores embeddings and allows the system to search for vectors that are similar to a query vector. Qdrant is one example of a vector database that can store vectors together with metadata.
+
+A stored vector should normally have enough metadata to identify where its text came from. Useful metadata may include a document identifier, chunk identifier, filename, page number, chunk index, file type, and chunking method.
+
+For example, suppose a document has the identifier DOC-001 and contains three chunks. The chunks might have identifiers CHUNK-001, CHUNK-002, and CHUNK-003. All three chunks should reference DOC-001. This relationship makes it possible to identify all chunks belonging to the same document.
+
+## Retrieval
+
+When a user asks a question, the retrieval system searches the vector database for relevant chunks. The number of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the five most relevant results.
+
+Choosing top-k is not trivial. A very small value may cause the system to miss useful evidence. A very large value may introduce irrelevant information and increase the amount of context sent to the language model.
+
+Similarity scores can also be used to filter results. A system may retrieve the top twenty candidates and then discard results whose similarity score is below a defined threshold.
+
+## Reranking
+
+Initial vector retrieval is not always sufficient. A reranker can examine the original query and retrieved chunks together and assign a more precise relevance score to each candidate.
+
+For example, a vector search might retrieve ten chunks because they discuss databases in general. A reranker may determine that only three of those chunks directly answer the user's question about database installation. The system can then provide those three chunks to the language model.
+
+This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results.
+
+## Adaptive RAG
+
+A simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.
+
+A straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking.
+
+For example, the query "What is the database installation procedure?" may require normal retrieval. The query "Compare the database installation requirements in the development and production environments" is more complex because information may need to be retrieved from multiple parts of the knowledge base.
+
+The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query.
+
+## Evaluation
+
+A RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.
+
+Recall at K measures whether relevant documents or chunks appear among the first K retrieved results. Mean Reciprocal Rank, often abbreviated MRR, considers the position of the first relevant result. Other metrics can measure ranking quality and answer quality.
+
+A useful evaluation dataset contains questions, expected relevant documents or chunks, and optionally reference answers. The same dataset can be used to compare fixed-size chunking, recursive chunking, semantic chunking, hybrid retrieval, reranking, and adaptive retrieval.
+
+## Example scenario
+
+Imagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, "What should I check when the database server fails to start after installation?"
+
+A strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model.
+
+The final answer should be grounded in the retrieved evidence rather than relying only on the language model's general knowledge. Ideally, the answer should also identify the source document and page from which the evidence was retrieved.
+
+This example demonstrates why document parsing, chunking, embeddings, retrieval, metadata, reranking, and generation should be designed as separate but connected components.

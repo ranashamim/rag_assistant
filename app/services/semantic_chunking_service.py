@@ -1,12 +1,11 @@
-from sentence_transformers import SentenceTransformer
 from app.services.chunking_service import recursive_chunk
 import numpy as np
 import re
 
 from app.config.settings import settings
 
+from app.services.embeddings_service import model
 
-model = SentenceTransformer(settings.embedding_model_name)
 
 
 def split_sentences(text):
@@ -87,18 +86,6 @@ def find_breakpoints(
         if similarity <= threshold
     ]
 
-def build_metadata(
-    chunks,
-    method="semantic"
-):
-
-    output = []
-
-    for chunk in chunks:
-
-        output.append(chunk)
-
-    return output
 
 def merge_small_chunks(
     chunks,
@@ -233,7 +220,4 @@ def semantic_chunk(
         max_chunk_chars
     )
 
-    return build_metadata(
-        chunks,
-        method="semantic"
-    )
+    return chunks

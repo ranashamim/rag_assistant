@@ -1,0 +1,62 @@
+[
+  {
+    "query": "What is Retrieval-Augmented Generation (RAG)?",
+    "expected_answer": "RAG is an architecture that combines information retrieval with large language models. It first retrieves relevant information from an external knowledge base and then provides that information to the language model as context.",
+    "expected_keywords": [
+      "information retrieval",
+      "large language models",
+      "external knowledge base",
+      "context"
+    ]
+  },
+  {
+    "query": "Why does chunk size affect retrieval quality?",
+    "expected_answer": "Chunk size affects retrieval quality because very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+    "expected_keywords": [
+      "chunk size",
+      "retrieval quality",
+      "small chunks",
+      "context",
+      "large chunks",
+      "unrelated information"
+    ]
+  },
+  {
+    "query": "What is the difference between fixed-size chunking and semantic chunking?",
+    "expected_answer": "Fixed-size chunking divides text according to a predefined number of characters or tokens, while semantic chunking identifies changes in meaning between neighboring pieces of text and can place sentences in different chunks when their semantic content changes significantly.",
+    "expected_keywords": [
+      "fixed-size",
+      "characters",
+      "tokens",
+      "semantic chunking",
+      "meaning",
+      "semantic content"
+    ]
+  },
+  {
+    "query": "Why is page metadata important in a RAG system?",
+    "expected_answer": "Page metadata helps identify where retrieved text came from and allows the final answer to provide a useful citation or location. Without page information, the system may retrieve the correct text but be unable to provide a useful citation or location.",
+    "expected_keywords": [
+      "page metadata",
+      "retrieved text",
+      "citation",
+      "location",
+      "page information"
+    ]
+  },
+  {
+    "query": "Why does an adaptive RAG system change its retrieval strategy depending on the query?",
+    "expected_answer": "An adaptive RAG system changes its behavior so that it can use the simplest retrieval strategy likely to produce reliable evidence for a particular query. A straightforward factual question may need only one vector search, while ambiguous questions may benefit from rewriting, complex questions may require decomposition, and questions requiring precise evidence may benefit from hybrid retrieval and reranking.",
+    "expected_keywords": [
+      "adaptive RAG",
+      "retrieval strategy",
+      "query",
+      "simplest retrieval strategy",
+      "reliable evidence",
+      "query rewriting",
+      "decomposition",
+      "hybrid retrieval",
+      "reranking"
+    ]
+  }
+]

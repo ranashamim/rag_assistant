@@ -1,0 +1,665 @@
+[
+    {
+        "query": "What is Retrieval-Augmented Generation (RAG)?",
+        "expected_answer": "RAG is an architecture that combines information retrieval with large language models. It first retrieves relevant information from an external knowledge base and then provides that information to the language model as context.",
+        "expected_keywords": [
+            "information retrieval",
+            "large language models",
+            "external knowledge base",
+            "context"
+        ]
+    },
+    {
+        "score": 0.94025886,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful\r\n\r\nLarge language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information.",
+        "source": "test.txt",
+        "chunk_id": "2b8db8bf-a7bb-43af-9b92-835b3f8f45eb",
+        "method": "semantic"
+    },
+    {
+        "score": 0.875918,
+        "text": "This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "f44caf4d-1773-4652-a763-d867f3f04959",
+        "method": "semantic"
+    },
+    {
+        "score": 0.85699964,
+        "text": "The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.",
+        "source": "test.txt",
+        "chunk_id": "319b4aeb-b6de-406d-aef4-329be7007935",
+        "method": "semantic"
+    },
+    {
+        "query": "Why does chunk size affect retrieval quality?",
+        "expected_answer": "Chunk size affects retrieval quality because very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+        "expected_keywords": [
+            "chunk size",
+            "retrieval quality",
+            "small chunks",
+            "context",
+            "large chunks",
+            "unrelated information"
+        ]
+    },
+    {
+        "score": 0.86655533,
+        "text": "## Chunking\r\n\r\nChunking is the process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk. Sentence-based chunking tries to preserve complete sentences. This can produce more natural chunks because sentences are usually meaningful linguistic units. However, punctuation-based approaches can fail when documents contain unusual formatting, abbreviations, tables, or sentences that are extremely long.",
+        "source": "test.txt",
+        "chunk_id": "d2ef3d8c-4c62-486f-827e-e6930764c9af",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8658569,
+        "text": "A very small value may cause the system to miss useful evidence. A very large value may introduce irrelevant information and increase the amount of context sent to the language model. Similarity scores can also be used to filter results. A system may retrieve the top twenty candidates and then discard results whose similarity score is below a defined threshold. ## Reranking\r\n\r\nInitial vector retrieval is not always sufficient. A reranker can examine the original query and retrieved chunks together and assign a more precise relevance score to each candidate. For example, a vector search might retrieve ten chunks because they discuss databases in general. A reranker may determine that only three of those chunks directly answer the user's question about database installation. The system can then provide those three chunks to the language model.",
+        "source": "test.txt",
+        "chunk_id": "9303e22d-e9bb-4029-9f4e-33c4a7bbd51d",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8564627,
+        "text": "relationship makes it possible to identify all chunks belonging to the same document. ## Retrieval When a user asks a question, the retrieval system searches the vector database for relevant chunks. The number of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the five most relevant results. Choosing top-k is not trivial.",
+        "source": "test.txt",
+        "chunk_id": "30f2bc53-8b5f-483c-bd1b-d1d59fb2787d",
+        "method": "semantic"
+    },
+    {
+        "query": "What is the difference between fixed-size chunking and semantic chunking?",
+        "expected_answer": "Fixed-size chunking divides text according to a predefined number of characters or tokens, while semantic chunking identifies changes in meaning between neighboring pieces of text and can place sentences in different chunks when their semantic content changes significantly.",
+        "expected_keywords": [
+            "fixed-size",
+            "characters",
+            "tokens",
+            "semantic chunking",
+            "meaning",
+            "semantic content"
+        ]
+    },
+    {
+        "score": 0.8743275,
+        "text": "Recursive chunking uses a hierarchy of separators. It may first attempt to split text by paragraphs, then by lines, then by sentences, and finally by spaces. This approach attempts to preserve larger semantic structures before falling back to smaller units. Semantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly. ## Embeddings",
+        "source": "test.txt",
+        "chunk_id": "fa9e052d-1b8f-46ed-a846-553a34af2236",
+        "method": "semantic"
+    },
+    {
+        "score": 0.86103237,
+        "text": "## Chunking\r\n\r\nChunking is the process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk. Sentence-based chunking tries to preserve complete sentences. This can produce more natural chunks because sentences are usually meaningful linguistic units. However, punctuation-based approaches can fail when documents contain unusual formatting, abbreviations, tables, or sentences that are extremely long.",
+        "source": "test.txt",
+        "chunk_id": "d2ef3d8c-4c62-486f-827e-e6930764c9af",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8489303,
+        "text": "may be placed in different chunks when their semantic content changes significantly. ## Embeddings After chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space. Texts with similar meanings should produce vectors that are relatively close to one another. For example, the question \"How can I install the database?\" may be semantically similar to a document chunk saying \"The database installation process begins by downloading the server package.\" The words are not identical, but the concepts are related.",
+        "source": "test.txt",
+        "chunk_id": "c41b0519-5aa3-4a5a-8580-7378010fbc74",
+        "method": "semantic"
+    },
+    {
+        "query": "Why is page metadata important in a RAG system?",
+        "expected_answer": "Page metadata helps identify where retrieved text came from and allows the final answer to provide a useful citation or location. Without page information, the system may retrieve the correct text but be unable to provide a useful citation or location.",
+        "expected_keywords": [
+            "page metadata",
+            "retrieved text",
+            "citation",
+            "location",
+            "page information"
+        ]
+    },
+    {
+        "score": 0.859908,
+        "text": "and searches for chunks that are semantically similar to the query. ## Document processing The first stage of a RAG pipeline is document ingestion. During ingestion, the system receives a document and extracts its content. A PDF may contain multiple pages, while a plain text file may be treated as a single logical page. The extracted content should preserve useful metadata such as the filename, document type, and page number. Consider a technical manual that contains information about installing a database server. The installation procedure may begin on one page and continue on the next page.",
+        "source": "test.txt",
+        "chunk_id": "b2f18951-32ae-498a-b92e-bc07f89a706b",
+        "method": "semantic"
+    },
+    {
+        "score": 0.84669256,
+        "text": "## Example scenario\r\n\r\nImagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, \"What should I check when the database server fails to start after installation?\"\r\n\r\nA strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model. The final answer should be grounded in the retrieved evidence rather than relying only on the language model's general knowledge. Ideally, the answer should also identify the source document and page from which the evidence was retrieved. This example demonstrates why document parsing, chunking, embeddings, retrieval, metadata, reranking, and generation should be designed as separate but connected components.",
+        "source": "test.txt",
+        "chunk_id": "ff34801d-1953-46cf-a929-7803e98b4703",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8462643,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful\r\n\r\nLarge language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information.",
+        "source": "test.txt",
+        "chunk_id": "2b8db8bf-a7bb-43af-9b92-835b3f8f45eb",
+        "method": "semantic"
+    },
+    {
+        "query": "Why does an adaptive RAG system change its retrieval strategy depending on the query?",
+        "expected_answer": "An adaptive RAG system changes its behavior so that it can use the simplest retrieval strategy likely to produce reliable evidence for a particular query. A straightforward factual question may need only one vector search, while ambiguous questions may benefit from rewriting, complex questions may require decomposition, and questions requiring precise evidence may benefit from hybrid retrieval and reranking.",
+        "expected_keywords": [
+            "adaptive RAG",
+            "retrieval strategy",
+            "query",
+            "simplest retrieval strategy",
+            "reliable evidence",
+            "query rewriting",
+            "decomposition",
+            "hybrid retrieval",
+            "reranking"
+        ]
+    },
+    {
+        "score": 0.91501516,
+        "text": "This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "f44caf4d-1773-4652-a763-d867f3f04959",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8968557,
+        "text": "The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.",
+        "source": "test.txt",
+        "chunk_id": "319b4aeb-b6de-406d-aef4-329be7007935",
+        "method": "semantic"
+    },
+    {
+        "score": 0.8685539,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful\r\n\r\nLarge language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information.",
+        "source": "test.txt",
+        "chunk_id": "2b8db8bf-a7bb-43af-9b92-835b3f8f45eb",
+        "method": "semantic"
+    }
+][
+    {
+        "query": "What is Retrieval-Augmented Generation (RAG)?",
+        "expected_answer": "RAG is an architecture that combines information retrieval with large language models. It first retrieves relevant information from an external knowledge base and then provides that information to the language model as context.",
+        "expected_keywords": [
+            "information retrieval",
+            "large language models",
+            "external knowledge base",
+            "context"
+        ]
+    },
+    {
+        "score": 0.9413436,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context.\r\n\r\n## Why RAG is useful\r\n\r\nLarge language models can generate fl",
+        "source": "test.txt",
+        "chunk_id": "647e109e-8c9f-4543-9f11-e9608889c02b",
+        "method": "fixed"
+    },
+    {
+        "score": 0.8613027,
+        "text": "nowledge base.\r\n\r\nThe purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query.\r\n\r\n## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.\r\n\r\nRecall at K measures whether relevant documents or chunks appear among the first K retrieved results. Mean Reci",
+        "source": "test.txt",
+        "chunk_id": "d40ffe8c-8120-417f-aea2-d52b9ed7ce52",
+        "method": "fixed"
+    },
+    {
+        "score": 0.8564502,
+        "text": " selects the most useful results.\r\n\r\n## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.\r\n\r\nA straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking",
+        "source": "test.txt",
+        "chunk_id": "1d4b2070-0fe5-4197-bc02-8f3539f650de",
+        "method": "fixed"
+    },
+    {
+        "query": "Why does chunk size affect retrieval quality?",
+        "expected_answer": "Chunk size affects retrieval quality because very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+        "expected_keywords": [
+            "chunk size",
+            "retrieval quality",
+            "small chunks",
+            "context",
+            "large chunks",
+            "unrelated information"
+        ]
+    },
+    {
+        "score": 0.88113093,
+        "text": " process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information.\r\n\r\nA fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information nea",
+        "source": "test.txt",
+        "chunk_id": "880ca133-4e74-4a6d-a2c3-a7e5fe7e7286",
+        "method": "fixed"
+    },
+    {
+        "score": 0.8665016,
+        "text": "ber of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the five most relevant results.\r\n\r\nChoosing top-k is not trivial. A very small value may cause the system to miss useful evidence. A very large value may introduce irrelevant information and increase the amount of context sent to the language model.\r\n\r\nSimilarity scores can also be used to filter results. A system may retrieve the top twenty candidates and then discard results whose similarity score ",
+        "source": "test.txt",
+        "chunk_id": "36a46c4d-673a-4df7-97d0-6c69a43f5ee4",
+        "method": "fixed"
+    },
+    {
+        "score": 0.853416,
+        "text": "ose a document has the identifier DOC-001 and contains three chunks. The chunks might have identifiers CHUNK-001, CHUNK-002, and CHUNK-003. All three chunks should reference DOC-001. This relationship makes it possible to identify all chunks belonging to the same document.\r\n\r\n## Retrieval\r\n\r\nWhen a user asks a question, the retrieval system searches the vector database for relevant chunks. The number of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the",
+        "source": "test.txt",
+        "chunk_id": "b1603ff5-79b7-4715-b4a4-c4762741dd97",
+        "method": "fixed"
+    },
+    {
+        "query": "What is the difference between fixed-size chunking and semantic chunking?",
+        "expected_answer": "Fixed-size chunking divides text according to a predefined number of characters or tokens, while semantic chunking identifies changes in meaning between neighboring pieces of text and can place sentences in different chunks when their semantic content changes significantly.",
+        "expected_keywords": [
+            "fixed-size",
+            "characters",
+            "tokens",
+            "semantic chunking",
+            "meaning",
+            "semantic content"
+        ]
+    },
+    {
+        "score": 0.86858857,
+        "text": " process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information.\r\n\r\nA fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information nea",
+        "source": "test.txt",
+        "chunk_id": "880ca133-4e74-4a6d-a2c3-a7e5fe7e7286",
+        "method": "fixed"
+    },
+    {
+        "score": 0.8567014,
+        "text": "l formatting, abbreviations, tables, or sentences that are extremely long.\r\n\r\nRecursive chunking uses a hierarchy of separators. It may first attempt to split text by paragraphs, then by lines, then by sentences, and finally by spaces. This approach attempts to preserve larger semantic structures before falling back to smaller units.\r\n\r\nSemantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neig",
+        "source": "test.txt",
+        "chunk_id": "9ae58c72-c47b-43f5-9bb0-73b53515636d",
+        "method": "fixed"
+    },
+    {
+        "score": 0.83915746,
+        "text": "ing only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly.\r\n\r\n## Embeddings\r\n\r\nAfter chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space. Texts with similar meanings should produce vectors that are relatively close to one another.\r\n\r\nFor",
+        "source": "test.txt",
+        "chunk_id": "f92e5ef5-c0cb-4076-a9f7-04a83fa2cc6e",
+        "method": "fixed"
+    },
+    {
+        "query": "Why is page metadata important in a RAG system?",
+        "expected_answer": "Page metadata helps identify where retrieved text came from and allows the final answer to provide a useful citation or location. Without page information, the system may retrieve the correct text but be unable to provide a useful citation or location.",
+        "expected_keywords": [
+            "page metadata",
+            "retrieved text",
+            "citation",
+            "location",
+            "page information"
+        ]
+    },
+    {
+        "score": 0.85209686,
+        "text": "ery.\r\n\r\n## Document processing\r\n\r\nThe first stage of a RAG pipeline is document ingestion. During ingestion, the system receives a document and extracts its content. A PDF may contain multiple pages, while a plain text file may be treated as a single logical page. The extracted content should preserve useful metadata such as the filename, document type, and page number.\r\n\r\nConsider a technical manual that contains information about installing a database server. The installation procedure may beg",
+        "source": "test.txt",
+        "chunk_id": "5e210fc5-4e3b-40df-9336-c33afe4e6f5c",
+        "method": "fixed"
+    },
+    {
+        "score": 0.84114665,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context.\r\n\r\n## Why RAG is useful\r\n\r\nLarge language models can generate fl",
+        "source": "test.txt",
+        "chunk_id": "647e109e-8c9f-4543-9f11-e9608889c02b",
+        "method": "fixed"
+    },
+    {
+        "score": 0.83693594,
+        "text": "d to the language model as context.\r\n\r\n## Why RAG is useful\r\n\r\nLarge language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information. A company, for example, may have thousands of internal documents containing policies, technical documentation, customer information, and operational procedures. Sending all of these documents to the language model for every question would be expensive and inefficient.\r\n\r\nRAG addresses this problem by div",
+        "source": "test.txt",
+        "chunk_id": "346cc2a7-cf72-47ea-a88c-3475aaedded0",
+        "method": "fixed"
+    },
+    {
+        "query": "Why does an adaptive RAG system change its retrieval strategy depending on the query?",
+        "expected_answer": "An adaptive RAG system changes its behavior so that it can use the simplest retrieval strategy likely to produce reliable evidence for a particular query. A straightforward factual question may need only one vector search, while ambiguous questions may benefit from rewriting, complex questions may require decomposition, and questions requiring precise evidence may benefit from hybrid retrieval and reranking.",
+        "expected_keywords": [
+            "adaptive RAG",
+            "retrieval strategy",
+            "query",
+            "simplest retrieval strategy",
+            "reliable evidence",
+            "query rewriting",
+            "decomposition",
+            "hybrid retrieval",
+            "reranking"
+        ]
+    },
+    {
+        "score": 0.9041975,
+        "text": " selects the most useful results.\r\n\r\n## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.\r\n\r\nA straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking",
+        "source": "test.txt",
+        "chunk_id": "1d4b2070-0fe5-4197-bc02-8f3539f650de",
+        "method": "fixed"
+    },
+    {
+        "score": 0.891281,
+        "text": "ler questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking.\r\n\r\nFor example, the query \"What is the database installation procedure?\" may require normal retrieval. The query \"Compare the database installation requirements in the development and production environments\" is more complex because information may need to be retrieved from multiple parts of the knowledge base.\r\n\r\nThe purpose of adaptive RAG is not to make every query more complicated. The purpo",
+        "source": "test.txt",
+        "chunk_id": "5cec8fd9-d810-41d6-aba3-e5dfeeaca328",
+        "method": "fixed"
+    },
+    {
+        "score": 0.88395476,
+        "text": "nowledge base.\r\n\r\nThe purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query.\r\n\r\n## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.\r\n\r\nRecall at K measures whether relevant documents or chunks appear among the first K retrieved results. Mean Reci",
+        "source": "test.txt",
+        "chunk_id": "d40ffe8c-8120-417f-aea2-d52b9ed7ce52",
+        "method": "fixed"
+    }
+][
+    {
+        "query": "What is Retrieval-Augmented Generation (RAG)?",
+        "expected_answer": "RAG is an architecture that combines information retrieval with large language models. It first retrieves relevant information from an external knowledge base and then provides that information to the language model as context.",
+        "expected_keywords": [
+            "information retrieval",
+            "large language models",
+            "external knowledge base",
+            "context"
+        ]
+    },
+    {
+        "score": 0.9481182,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context.",
+        "source": "test.txt",
+        "chunk_id": "161fc7b3-9b3f-4e51-b44a-d0d340c27f26",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.87402844,
+        "text": "The system can then provide those three chunks to the language model. This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "f76cb0f8-e188-43e0-8c3b-b4e40e8cac8a",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.8628368,
+        "text": "The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently. Recall at K measures whether relevant documents or chunks appear among the first K retrieved results.",
+        "source": "test.txt",
+        "chunk_id": "d3cff75e-825d-4dcd-9a20-3d46a9f83795",
+        "method": "punctuation"
+    },
+    {
+        "query": "Why does chunk size affect retrieval quality?",
+        "expected_answer": "Chunk size affects retrieval quality because very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+        "expected_keywords": [
+            "chunk size",
+            "retrieval quality",
+            "small chunks",
+            "context",
+            "large chunks",
+            "unrelated information"
+        ]
+    },
+    {
+        "score": 0.90747553,
+        "text": "Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk.",
+        "source": "test.txt",
+        "chunk_id": "5529f8e0-e853-4e6b-bfe1-39c7645d29cd",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.8647562,
+        "text": "All three chunks should reference DOC-001. This relationship makes it possible to identify all chunks belonging to the same document. ## Retrieval\r\n\r\nWhen a user asks a question, the retrieval system searches the vector database for relevant chunks. The number of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the five most relevant results. Choosing top-k is not trivial. A very small value may cause the system to miss useful evidence.",
+        "source": "test.txt",
+        "chunk_id": "9bfbc7d9-9dbd-4ad3-8b03-da815fc0ab17",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.8564962,
+        "text": "A very small value may cause the system to miss useful evidence. A very large value may introduce irrelevant information and increase the amount of context sent to the language model. Similarity scores can also be used to filter results. A system may retrieve the top twenty candidates and then discard results whose similarity score is below a defined threshold. ## Reranking\r\n\r\nInitial vector retrieval is not always sufficient.",
+        "source": "test.txt",
+        "chunk_id": "a08f7ca7-18ff-4ce9-b17a-11cb49032af5",
+        "method": "punctuation"
+    },
+    {
+        "query": "What is the difference between fixed-size chunking and semantic chunking?",
+        "expected_answer": "Fixed-size chunking divides text according to a predefined number of characters or tokens, while semantic chunking identifies changes in meaning between neighboring pieces of text and can place sentences in different chunks when their semantic content changes significantly.",
+        "expected_keywords": [
+            "fixed-size",
+            "characters",
+            "tokens",
+            "semantic chunking",
+            "meaning",
+            "semantic content"
+        ]
+    },
+    {
+        "score": 0.8690547,
+        "text": "Recursive chunking uses a hierarchy of separators. It may first attempt to split text by paragraphs, then by lines, then by sentences, and finally by spaces. This approach attempts to preserve larger semantic structures before falling back to smaller units. Semantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text.",
+        "source": "test.txt",
+        "chunk_id": "1955a141-4912-4ed5-bc16-edb838aa19fa",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.86543334,
+        "text": "Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk.",
+        "source": "test.txt",
+        "chunk_id": "5529f8e0-e853-4e6b-bfe1-39c7645d29cd",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.8429482,
+        "text": "Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly. ## Embeddings\r\n\r\nAfter chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space.",
+        "source": "test.txt",
+        "chunk_id": "2aa9a183-e30a-43b8-908b-bea38b88a165",
+        "method": "punctuation"
+    },
+    {
+        "query": "Why is page metadata important in a RAG system?",
+        "expected_answer": "Page metadata helps identify where retrieved text came from and allows the final answer to provide a useful citation or location. Without page information, the system may retrieve the correct text but be unable to provide a useful citation or location.",
+        "expected_keywords": [
+            "page metadata",
+            "retrieved text",
+            "citation",
+            "location",
+            "page information"
+        ]
+    },
+    {
+        "score": 0.85349476,
+        "text": "## Example scenario\r\n\r\nImagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, \"What should I check when the database server fails to start after installation?\"\r\n\r\nA strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model.",
+        "source": "test.txt",
+        "chunk_id": "647e1d93-bac2-4c82-919e-e83c92ef9eca",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.84680176,
+        "text": "An engineer asks, \"What should I check when the database server fails to start after installation?\"\r\n\r\nA strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model. The final answer should be grounded in the retrieved evidence rather than relying only on the language model's general knowledge.",
+        "source": "test.txt",
+        "chunk_id": "97719ede-1425-4284-ba8a-0b2211fac26a",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.8461313,
+        "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context.",
+        "source": "test.txt",
+        "chunk_id": "161fc7b3-9b3f-4e51-b44a-d0d340c27f26",
+        "method": "punctuation"
+    },
+    {
+        "query": "Why does an adaptive RAG system change its retrieval strategy depending on the query?",
+        "expected_answer": "An adaptive RAG system changes its behavior so that it can use the simplest retrieval strategy likely to produce reliable evidence for a particular query. A straightforward factual question may need only one vector search, while ambiguous questions may benefit from rewriting, complex questions may require decomposition, and questions requiring precise evidence may benefit from hybrid retrieval and reranking.",
+        "expected_keywords": [
+            "adaptive RAG",
+            "retrieval strategy",
+            "query",
+            "simplest retrieval strategy",
+            "reliable evidence",
+            "query rewriting",
+            "decomposition",
+            "hybrid retrieval",
+            "reranking"
+        ]
+    },
+    {
+        "score": 0.91053903,
+        "text": "The system can then provide those three chunks to the language model. This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "f76cb0f8-e188-43e0-8c3b-b4e40e8cac8a",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.89812857,
+        "text": "An adaptive RAG system instead changes its behavior depending on the query. A straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking. For example, the query \"What is the database installation procedure?\" may require normal retrieval.",
+        "source": "test.txt",
+        "chunk_id": "a27e6627-a90c-47f0-be3d-5d901624923a",
+        "method": "punctuation"
+    },
+    {
+        "score": 0.89294875,
+        "text": "The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently. Recall at K measures whether relevant documents or chunks appear among the first K retrieved results.",
+        "source": "test.txt",
+        "chunk_id": "d3cff75e-825d-4dcd-9a20-3d46a9f83795",
+        "method": "punctuation"
+    }
+][
+    {
+        "query": "What is Retrieval-Augmented Generation (RAG)?",
+        "expected_answer": "RAG is an architecture that combines information retrieval with large language models. It first retrieves relevant information from an external knowledge base and then provides that information to the language model as context.",
+        "expected_keywords": [
+            "information retrieval",
+            "large language models",
+            "external knowledge base",
+            "context"
+        ]
+    },
+    {
+        "score": 0.94221747,
+        "text": "# Retrieval-Augmented Generation Retrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful",
+        "source": "test.txt",
+        "chunk_id": "ea5016d5-4817-4942-a7d4-589f2f85db47",
+        "method": "recursive"
+    },
+    {
+        "score": 0.8635291,
+        "text": "all of these documents to the language model for every question would be expensive and inefficient. RAG addresses this problem by dividing documents into smaller pieces called chunks. These chunks are converted into vector representations called embeddings and stored in a vector database. When a user asks a question, the system converts the question into an embedding and searches for chunks that are semantically similar to the query. ## Document processing",
+        "source": "test.txt",
+        "chunk_id": "4fe4cf8c-6713-4d06-86f4-571d38405e48",
+        "method": "recursive"
+    },
+    {
+        "score": 0.86057734,
+        "text": "about database installation. The system can then provide those three chunks to the language model. This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG A simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "004f96de-26e7-4581-beac-87f1c0799f47",
+        "method": "recursive"
+    },
+    {
+        "query": "Why does chunk size affect retrieval quality?",
+        "expected_answer": "Chunk size affects retrieval quality because very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+        "expected_keywords": [
+            "chunk size",
+            "retrieval quality",
+            "small chunks",
+            "context",
+            "large chunks",
+            "unrelated information"
+        ]
+    },
+    {
+        "score": 0.8664462,
+        "text": "may not be able to provide a useful citation or location for the retrieved information. ## Chunking Chunking is the process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information.",
+        "source": "test.txt",
+        "chunk_id": "5dc2be22-ffa3-4fef-acf0-2a5732531121",
+        "method": "recursive"
+    },
+    {
+        "score": 0.858985,
+        "text": "query and retrieved chunks together and assign a more precise relevance score to each candidate. For example, a vector search might retrieve ten chunks because they discuss databases in general. A reranker may determine that only three of those chunks directly answer the user's question about database installation. The system can then provide those three chunks to the language model.",
+        "source": "test.txt",
+        "chunk_id": "96f78a77-4ba5-474f-a220-0766a7a1a8d6",
+        "method": "recursive"
+    },
+    {
+        "score": 0.8586762,
+        "text": "semantic chunking, hybrid retrieval, reranking, and adaptive retrieval. ## Example scenario Imagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, \"What should I check when the database server fails to start after installation?\"",
+        "source": "test.txt",
+        "chunk_id": "251d4fc6-4218-4fa6-80c1-cf401430f7fd",
+        "method": "recursive"
+    },
+    {
+        "query": "What is the difference between fixed-size chunking and semantic chunking?",
+        "expected_answer": "Fixed-size chunking divides text according to a predefined number of characters or tokens, while semantic chunking identifies changes in meaning between neighboring pieces of text and can place sentences in different chunks when their semantic content changes significantly.",
+        "expected_keywords": [
+            "fixed-size",
+            "characters",
+            "tokens",
+            "semantic chunking",
+            "meaning",
+            "semantic content"
+        ]
+    },
+    {
+        "score": 0.8736969,
+        "text": "This approach attempts to preserve larger semantic structures before falling back to smaller units. Semantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly. ## Embeddings",
+        "source": "test.txt",
+        "chunk_id": "79a555be-6de4-474d-8b44-e482b2f3f262",
+        "method": "recursive"
+    },
+    {
+        "score": 0.8680351,
+        "text": "may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk.",
+        "source": "test.txt",
+        "chunk_id": "13c86836-e904-4fc3-a113-dee7e939c2e6",
+        "method": "recursive"
+    },
+    {
+        "score": 0.8371924,
+        "text": "may be placed in different chunks when their semantic content changes significantly. ## Embeddings After chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space. Texts with similar meanings should produce vectors that are relatively close to one another.",
+        "source": "test.txt",
+        "chunk_id": "b32b6dc7-3e2f-410e-86ff-adf5b89b9c90",
+        "method": "recursive"
+    },
+    {
+        "query": "Why is page metadata important in a RAG system?",
+        "expected_answer": "Page metadata helps identify where retrieved text came from and allows the final answer to provide a useful citation or location. Without page information, the system may retrieve the correct text but be unable to provide a useful citation or location.",
+        "expected_keywords": [
+            "page metadata",
+            "retrieved text",
+            "citation",
+            "location",
+            "page information"
+        ]
+    },
+    {
+        "score": 0.85614717,
+        "text": "and searches for chunks that are semantically similar to the query. ## Document processing The first stage of a RAG pipeline is document ingestion. During ingestion, the system receives a document and extracts its content. A PDF may contain multiple pages, while a plain text file may be treated as a single logical page. The extracted content should preserve useful metadata such as the filename, document type, and page number.",
+        "source": "test.txt",
+        "chunk_id": "1c856ead-bdb9-45d6-be8f-80762927f257",
+        "method": "recursive"
+    },
+    {
+        "score": 0.85375607,
+        "text": "An engineer asks, \"What should I check when the database server fails to start after installation?\" A strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model.",
+        "source": "test.txt",
+        "chunk_id": "9df53585-b65a-4ac9-8ad5-98ff05e90cbd",
+        "method": "recursive"
+    },
+    {
+        "score": 0.8462099,
+        "text": "# Retrieval-Augmented Generation Retrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful",
+        "source": "test.txt",
+        "chunk_id": "ea5016d5-4817-4942-a7d4-589f2f85db47",
+        "method": "recursive"
+    },
+    {
+        "query": "Why does an adaptive RAG system change its retrieval strategy depending on the query?",
+        "expected_answer": "An adaptive RAG system changes its behavior so that it can use the simplest retrieval strategy likely to produce reliable evidence for a particular query. A straightforward factual question may need only one vector search, while ambiguous questions may benefit from rewriting, complex questions may require decomposition, and questions requiring precise evidence may benefit from hybrid retrieval and reranking.",
+        "expected_keywords": [
+            "adaptive RAG",
+            "retrieval strategy",
+            "query",
+            "simplest retrieval strategy",
+            "reliable evidence",
+            "query rewriting",
+            "decomposition",
+            "hybrid retrieval",
+            "reranking"
+        ]
+    },
+    {
+        "score": 0.91218495,
+        "text": "for every question. An adaptive RAG system instead changes its behavior depending on the query. A straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking.",
+        "source": "test.txt",
+        "chunk_id": "a19c31d3-e3a2-45ec-8a36-7b6ede6e91e3",
+        "method": "recursive"
+    },
+    {
+        "score": 0.89874965,
+        "text": "complex because information may need to be retrieved from multiple parts of the knowledge base. The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation A RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.",
+        "source": "test.txt",
+        "chunk_id": "8a4ca83a-9ddb-43ec-ad84-5891ffdc4e22",
+        "method": "recursive"
+    },
+    {
+        "score": 0.897082,
+        "text": "about database installation. The system can then provide those three chunks to the language model. This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG A simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
+        "source": "test.txt",
+        "chunk_id": "004f96de-26e7-4581-beac-87f1c0799f47",
+        "method": "recursive"
+    }
+]
