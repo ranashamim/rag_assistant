@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from app.services.retrieval_service import rerank_retrieved_chunks
+from app.services.router_service import route_query
 from app.test.evaluation_chunking_strategies import evaluation
 
 router = APIRouter(prefix="/retrieval", tags=["Query"])
@@ -13,4 +14,10 @@ async def retrieve_docs(query: str):
 @router.get("/evaluation/")
 async def evaulate():
     result = await evaluation()
+    return result
+
+
+@router.get("/test/{query}")
+async def evaulate(query: str):
+    result = route_query(query)
     return result
