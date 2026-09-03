@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from app.services.retrieval_service import rerank_retrieved_chunks
-from app.services.router_service import route_query
+from app.services.router_service import retrieve_decomposed
 from app.test.evaluation_chunking_strategies import evaluation
 
 router = APIRouter(prefix="/retrieval", tags=["Query"])
@@ -19,5 +19,6 @@ async def evaulate():
 
 @router.get("/test/{query}")
 async def evaulate(query: str):
-    result = route_query(query)
+   # result = await adaptive_retrieve(query)
+    result = await retrieve_decomposed(query)
     return result

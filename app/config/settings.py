@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     chunk_overlap_sentences: int
     semantic_chunk_percentile: int
 
-    groq_api_key: str
+    gap_api_key: str
 
     model_config = SettingsConfigDict(
         env_file=".env"
