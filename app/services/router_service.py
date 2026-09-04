@@ -93,6 +93,33 @@ async def retrieve_decomposed(query: str):
         reverse=True
     )
 
+def rewrite_query(query: str, context: str = ""):
+
+    prompt = f"""
+        Rewrite the user's query into a clear, self-contained question
+        for document retrieval.
+
+        Use ONLY information explicitly present in the user query
+        and the provided context.
+
+        Do NOT invent a topic, entity, or subject that is not present
+        in the query or context.
+
+        If the query cannot be rewritten without missing information,
+        return the original query unchanged.
+
+        Context:
+        {context}
+
+        User query:
+        {query}
+
+        Return ONLY the rewritten question.
+        """
+
+    response = generate_response(prompt=prompt)
+
+    return response.strip()
 
 
 async def adaptive_retrieve(query: str):
@@ -107,8 +134,35 @@ async def adaptive_retrieve(query: str):
             rerank_limit=3
         )
         return reranked_chunks
+    elif strategy == "decomposition":
+        reranked_chunks = await retrieve_decomposed(query)
+
+        return reranked_chunks
+
+    elif strategy == "rewrite":
+        rewritten_query = rewrite_query(query)
+
+        reranked_chunks = await rerank_retrieved_chunks(
+            rewritten_query,
+            candidate_limit=10,
+            rerank_limit=3
+        )
+
+        return reranked_chunks
 
     return {
         "strategy": strategy,
         "message": "Strategy not implemented yet"
     }
+
+def build_context(chunks):
+
+    context_parts = []
+
+    for chunk in chunks:
+        context_parts.append(
+            f"Source: {chunk['source']}\n"
+            f"Content: {chunk['text']}"
+        )
+
+    return "\n\n".join(context_parts)
