@@ -20,5 +20,5 @@ async def evaulate():
 
 @router.get("/test/{query}")
 async def evaulate(query: str):
-    response = answer_query(query=query)
+    response = await answer_query(query=query)
     return response

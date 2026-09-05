@@ -12,7 +12,7 @@ router = APIRouter(prefix="/docs", tags=["Document"])
 
 @router.post("/upload/")
 async def upload_file(file: UploadFile = File(...)):
-    vector = await to_db_vector(file, ChunkMethod.RECURSIVE)
+    vector = await to_db_vector(file, ChunkMethod.SEMANTIC)
     return vector
 
 
