@@ -4,6 +4,7 @@ import uuid
 from app.config.settings import settings
 
 from app.models.enums import ChunkMethod
+from app.services.file_service import save_chunks_to_file
 
 # =====================================
 # Utility
@@ -27,6 +28,7 @@ def build_chunk_objects(chunks, page_number, source, file_type, method, document
             "document_id": document_id
         })
 
+    print(save_chunks_to_file(output))
     return output
 
 

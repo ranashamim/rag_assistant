@@ -2,7 +2,7 @@ from app.services.llm_service import generate_response
 
 import json
 
-from app.services.retrieval_service import rerank_retrieved_chunks
+from app.services.retrieval_service import hybrid_retrieve, rerank_retrieved_chunks
 
 def route_query(query: str):
 
@@ -61,17 +61,16 @@ def decompose_query(query: str):
     return result
 
 
-async def retrieve_decomposed(query: str):
+async def retrieve_decomposed(query: str, final_limit=3):
 
     sub_queries = decompose_query(query)
 
     all_chunks = []
 
     for sub_query in sub_queries:
-        chunks = await rerank_retrieved_chunks(
+        chunks = await hybrid_retrieve(
             sub_query,
-            candidate_limit=10,
-            rerank_limit=3
+            candidate_limit=10
         )
 
         all_chunks.extend(chunks)
@@ -91,7 +90,7 @@ async def retrieve_decomposed(query: str):
         unique_chunks.values(),
         key=lambda chunk: chunk["rerank_score"],
         reverse=True
-    )
+    )[:final_limit]
 
 def rewrite_query(query: str, context: str = ""):
 
@@ -122,30 +121,29 @@ def rewrite_query(query: str, context: str = ""):
     return response.strip()
 
 
-async def adaptive_retrieve(query: str):
+async def adaptive_retrieve(query: str, context: str = ""):
 
     routing = route_query(query)
     strategy = routing["strategy"]
 
     if strategy == "normal_retrieval":
-        reranked_chunks = await rerank_retrieved_chunks(
+        reranked_chunks = await hybrid_retrieve(
             query,
-            candidate_limit=10,
-            rerank_limit=3
+            candidate_limit=10
         )
         return reranked_chunks
+    
     elif strategy == "decomposition":
         reranked_chunks = await retrieve_decomposed(query)
 
         return reranked_chunks
 
     elif strategy == "rewrite":
-        rewritten_query = rewrite_query(query)
+        rewritten_query = rewrite_query(query, context)
 
-        reranked_chunks = await rerank_retrieved_chunks(
+        reranked_chunks = await hybrid_retrieve(
             rewritten_query,
-            candidate_limit=10,
-            rerank_limit=3
+            candidate_limit=10
         )
 
         return reranked_chunks

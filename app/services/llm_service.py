@@ -1,4 +1,3 @@
-from groq import Groq
 
 from app.config.settings import settings
 

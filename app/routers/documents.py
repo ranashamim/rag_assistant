@@ -24,25 +24,6 @@ async def get_chunks():
             "chunks": chunks
         }
 
-text = """
-FastAPI is a Python framework for building APIs.
-It is based on standard Python type hints.
-
-FastAPI supports asynchronous programming.
-It also provides automatic API documentation.
-
-Retrieval augmented generation combines retrieval
-with language model generation.
-"""
-
-@router.get("/testchunks/")
-async def get_chunk_test():
-    chunks = semantic_chunk(
-        text,
-        percentile=25
-    )
-    return chunks
-
 
 @router.post("/upload_test/")
 async def upload_file(file: UploadFile = File(...)):
