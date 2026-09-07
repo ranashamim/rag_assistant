@@ -29,8 +29,17 @@ def generate_answer(query, context):
     response = generate_response(prompt=prompt)
     return response
 
+
 async def answer_query(query):
     result = await adaptive_retrieve(query)
-    text_block = build_context(result)
+
+    strategy = result["strategy"]
+    chunks = result["chunks"]
+
+    text_block = build_context(chunks)
     response = generate_answer(query, text_block)
-    return response
+
+    return {
+        "answer": response,
+        "strategy": strategy
+    }

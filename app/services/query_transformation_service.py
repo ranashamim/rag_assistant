@@ -1,6 +1,7 @@
 import json
 
 from app.services.llm_service import generate_response
+from app.services.retrieval_service import hybrid_retrieve
 
 def generate_multi_queries(query: str):
 
@@ -23,3 +24,32 @@ def generate_multi_queries(query: str):
     response = json.loads(json_response) 
     
     return response
+
+
+async def retrieve_multi_query(query: str, final_limit=3):
+
+    multi_queries = generate_multi_queries(query)
+
+    all_chunks = []
+    for query_item in multi_queries:
+        chunks = await hybrid_retrieve(query_item)
+
+        all_chunks.extend(chunks)
+
+    unique_chunks = {}
+    for chunk in all_chunks:
+        chunk_id = chunk["chunk_id"]
+
+        if (
+            chunk_id not in unique_chunks
+            or chunk["rerank_score"] > unique_chunks[chunk_id]["rerank_score"]
+        ):
+            unique_chunks[chunk_id] = chunk
+
+
+    return sorted(
+        unique_chunks.values(),
+        key=lambda chunk: chunk["rerank_score"],
+        reverse=True
+    )[:final_limit]
+

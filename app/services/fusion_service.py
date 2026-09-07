@@ -17,8 +17,7 @@ def reciprocal_rank_fusion(result_lists, k=60):
             else:
                 fused_results[chunk_id]["fusion_score"] += fusion_score
 
-    print("FUSED RESULTS:")
-    print(fused_results)
+
 
     sorted_results = sorted(
         fused_results.items(),

@@ -2,7 +2,8 @@ from app.services.llm_service import generate_response
 
 import json
 
-from app.services.retrieval_service import hybrid_retrieve, rerank_retrieved_chunks
+from app.services.query_transformation_service import retrieve_multi_query
+from app.services.retrieval_service import hybrid_retrieve
 
 def route_query(query: str):
 
@@ -15,12 +16,14 @@ def route_query(query: str):
     - simple: a clear, self-contained question that can be answered using normal retrieval.
     - complex: a question requiring multiple pieces of information, comparison, or multiple reasoning steps.
     - ambiguous: a question that is unclear or depends on missing context.
+    - broad: a clear question where different formulations or terminology may retrieve different relevant information.
 
     Choose the strategy based on these rules:
     - simple -> normal_retrieval
     - complex -> decomposition
     - ambiguous -> rewrite
-
+    - broad -> multi_query
+    
     Return ONLY valid JSON in this exact format:
     {{
         "query_type": "...",
@@ -49,9 +52,6 @@ def decompose_query(query: str):
         """
 
     response = generate_response(prompt=prompt)
-
-    print("DECOMPOSITION RESPONSE:")
-    print(repr(response))
 
     result = json.loads(response)
 
@@ -125,20 +125,24 @@ async def adaptive_retrieve(query: str, context: str = ""):
 
     routing = route_query(query)
     strategy = routing["strategy"]
+    query_type = routing["query_type"]
 
     if strategy == "normal_retrieval":
+        print("***************")
+        print(strategy)
         reranked_chunks = await hybrid_retrieve(
             query,
             candidate_limit=10
         )
-        return reranked_chunks
     
     elif strategy == "decomposition":
+        print("***************")
+        print(strategy)
         reranked_chunks = await retrieve_decomposed(query)
 
-        return reranked_chunks
-
     elif strategy == "rewrite":
+        print("***************")
+        print(strategy)
         rewritten_query = rewrite_query(query, context)
 
         reranked_chunks = await hybrid_retrieve(
@@ -146,12 +150,18 @@ async def adaptive_retrieve(query: str, context: str = ""):
             candidate_limit=10
         )
 
-        return reranked_chunks
+
+    elif strategy == "multi_query":
+        print("***************")
+        print(strategy)
+        reranked_chunks = await retrieve_multi_query(query)
 
     return {
+        "query_type": query_type,
         "strategy": strategy,
-        "message": "Strategy not implemented yet"
+        "chunks": reranked_chunks
     }
+
 
 def build_context(chunks):
 
