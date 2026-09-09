@@ -1,12 +1,14 @@
 from rank_bm25 import BM25Okapi
 
+from app.models.models import RetrievalResultModel
+
 
 def build_bm25_index(chunks):
 
     tokens = []
 
     for chunk in chunks:
-        text = chunk["text"]
+        text = chunk.text
         tokenize = text.lower().split()
         tokens.append(tokenize)
 
@@ -22,11 +24,15 @@ def search_bm25(bm25, query, chunks, limit=5):
     top_results = sorted(indexed_scores, key=lambda x: x[1], reverse=True)[:limit]
 
     related_chunks = []
-
     for index, score in top_results:
         chunk = chunks[index]
-        chunk["bm25_score"] = score
-        related_chunks.append(chunk)
+
+        result = RetrievalResultModel(
+            chunk=chunk,
+            score=float(score)
+        )
+
+        related_chunks.append(result)
 
     return related_chunks
 

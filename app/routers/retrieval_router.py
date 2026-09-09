@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from app.services.generation_service import answer_query
 from app.services.query_transformation_service import retrieve_multi_query
+from app.services.retrieval_service import get_bm25_results, hybrid_retrieve
+from app.services.retriever import BM25Retriever, DenseRetriever
 from app.services.router_service import adaptive_retrieve
 from app.test.evaluation_chunking_strategies import evaluation
 
@@ -20,7 +22,11 @@ async def evaulate():
 
 @router.get("/test/{query}")
 async def evaulate(query: str):
-    results = await retrieve_multi_query(query)
-    return results
+    dense = DenseRetriever()
+    bm25 = BM25Retriever()
+    await dense.retrieve("What is RAG?", 5)
+    await bm25.retrieve("What is RAG?", 5)
+    # results = await hybrid_retrieve(query)
+    # return results
 
     

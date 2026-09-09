@@ -6,6 +6,8 @@ from app.config.settings import settings
 from app.models.enums import ChunkMethod
 from app.services.file_service import save_chunks_to_file
 
+from app.models.models import ChunkModel
+
 # =====================================
 # Utility
 # =====================================
@@ -17,18 +19,20 @@ def build_chunk_objects(chunks, page_number, source, file_type, method, document
         if not chunk:
             continue
 
-        output.append({
-            "chunk_id": str(uuid.uuid4()),
-            "text": chunk,
-            "source": source,
-            "file_type": file_type,
-            "page_number": page_number,
-            "chunk_index": i,
-            "method": method, 
-            "document_id": document_id
-        })
+        output.append(
+            ChunkModel(
+                chunk_id=str(uuid.uuid4()),
+                text=chunk,
+                source=source,
+                file_type=file_type,
+                page_number=page_number,
+                chunk_index=i,
+                method=method,
+                document_id=document_id
+            )
+        )
 
-    print(save_chunks_to_file(output))
+    save_chunks_to_file(output)
     return output
 
 

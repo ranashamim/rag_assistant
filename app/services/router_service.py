@@ -78,17 +78,17 @@ async def retrieve_decomposed(query: str, final_limit=3):
     unique_chunks = {}
 
     for chunk in all_chunks:
-        chunk_id = chunk["chunk_id"]
+        chunk_id = chunk.chunk.chunk_id
 
         if (
             chunk_id not in unique_chunks
-            or chunk["rerank_score"] > unique_chunks[chunk_id]["rerank_score"]
+            or chunk.score > unique_chunks[chunk_id].score
         ):
             unique_chunks[chunk_id] = chunk
 
     return sorted(
         unique_chunks.values(),
-        key=lambda chunk: chunk["rerank_score"],
+        key=lambda chunk: chunk.score,
         reverse=True
     )[:final_limit]
 
@@ -169,8 +169,8 @@ def build_context(chunks):
 
     for chunk in chunks:
         context_parts.append(
-            f"Source: {chunk['source']}\n"
-            f"Content: {chunk['text']}"
+            f"Source: {chunk.chunk.source}\n"
+            f"Content: {chunk.chunk.text}"
         )
 
     return "\n\n".join(context_parts)

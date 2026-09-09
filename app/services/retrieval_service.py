@@ -1,4 +1,5 @@
 
+from app.models.models import RetrievalResultModel
 from app.services.embeddings_service import embed_query
 
 from app.config.settings import settings
@@ -21,18 +22,30 @@ async def retrieve_chunks(query: str, candidate_limit: int = 10):
         query=query_embedding,
         limit=candidate_limit
     )
-    
 
-    return [
-            {
-                "score": result.score,
-                "text": result.payload["text"],
-                "source": result.payload.get("source"),
-                "chunk_id": result.payload.get("chunk_id"),
-                "method": result.payload.get("method")
-            }
-            for result in results.points
-        ]
+    chunks = read_chunks_file()
+
+    chunk_by_id = {
+        chunk.chunk_id: chunk
+        for chunk in chunks
+    }
+
+    retrieved_chunks = []
+
+    for result in results.points:
+        chunk_id = result.payload.get("chunk_id")
+        chunk = chunk_by_id.get(chunk_id)
+
+        if chunk:
+            retrieved_chunks.append(
+                RetrievalResultModel(
+                    chunk=chunk,
+                    score=result.score
+                )
+            )
+
+
+    return retrieved_chunks
 
 
 async def rerank_retrieved_chunks(query: str, candidate_limit: int=10, rerank_limit: int=3):
@@ -51,6 +64,10 @@ bm25_index = build_bm25_index(chunks)
 def get_bm25_results(query, limit=10):
     
     related_chunks = search_bm25(bm25= bm25_index, query=query, chunks=chunks, limit=limit)
+
+
+    print("BM25 RESULTS:", related_chunks)
+    print("BM25 TYPE:", type(related_chunks))
 
     return related_chunks
 

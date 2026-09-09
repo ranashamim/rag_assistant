@@ -1,162 +1,162 @@
 [
     {
-        "chunk_id": "7929240a-1805-4fab-b4f5-d88696b056c9",
+        "chunk_id": "b0a9bcbb-ddda-41e9-a409-eef5ffbf9fe4",
         "text": "# Retrieval-Augmented Generation\r\n\r\nRetrieval-Augmented Generation, commonly called RAG, is an architecture that combines information retrieval with large language models. Instead of asking a language model to answer a question only from information stored in its parameters, a RAG system first retrieves relevant information from an external knowledge base. The retrieved information is then provided to the language model as context. ## Why RAG is useful\r\n\r\nLarge language models can generate fluent answers, but they may not have access to private, recent, or domain-specific information.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 0,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "ef1a5c61-b9e0-438c-af8e-30168c9a139e",
+        "chunk_id": "70933bfb-6cdf-4071-91fc-852c9cd25eed",
         "text": "A company, for example, may have thousands of internal documents containing policies, technical documentation, customer information, and operational procedures. Sending all of these documents to the language model for every question would be expensive and inefficient. RAG addresses this problem by dividing documents into smaller pieces called chunks. These chunks are converted into vector representations called embeddings and stored in a vector database. When a user asks a question, the system converts the question into an embedding and searches for chunks that are semantically similar to the query. ## Document processing",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 1,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "68956a22-2f8b-4abf-80d4-bd5a264f95e6",
+        "chunk_id": "f27fbb0d-2c28-4f95-9f53-77e4ffbe5ff1",
         "text": "and searches for chunks that are semantically similar to the query. ## Document processing The first stage of a RAG pipeline is document ingestion. During ingestion, the system receives a document and extracts its content. A PDF may contain multiple pages, while a plain text file may be treated as a single logical page. The extracted content should preserve useful metadata such as the filename, document type, and page number. Consider a technical manual that contains information about installing a database server. The installation procedure may begin on one page and continue on the next page.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 2,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "823ba9b9-e03a-426a-8e37-cf965429f991",
+        "chunk_id": "d7c8663f-128f-4a00-88c1-c16d7d48bc6f",
         "text": "If the document-processing system loses page information, the retrieval system may still find the correct text, but the final answer may not be able to provide a useful citation or location for the retrieved information.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 3,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "04c899d8-017d-4ab2-94b7-913f34d9bb72",
+        "chunk_id": "b9e11f9f-bb19-42f4-ab41-515fb4d54ee9",
         "text": "## Chunking\r\n\r\nChunking is the process of dividing a document into smaller units that can be embedded and retrieved independently. Chunk size has a significant effect on retrieval quality. Very small chunks may lose important context, while very large chunks may contain too much unrelated information. A fixed-size chunking strategy divides text according to a predefined number of characters or tokens. For example, a system might use chunks of 500 characters with an overlap of 100 characters. Overlap allows information near the boundary of one chunk to appear again in the next chunk. Sentence-based chunking tries to preserve complete sentences. This can produce more natural chunks because sentences are usually meaningful linguistic units. However, punctuation-based approaches can fail when documents contain unusual formatting, abbreviations, tables, or sentences that are extremely long.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 4,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "cb1b6f4d-5335-4b34-8908-7b0fa97a5da4",
+        "chunk_id": "93b919dc-7b20-4114-bc6b-2874bbdb5b1b",
         "text": "Recursive chunking uses a hierarchy of separators. It may first attempt to split text by paragraphs, then by lines, then by sentences, and finally by spaces. This approach attempts to preserve larger semantic structures before falling back to smaller units. Semantic chunking takes a different approach. Instead of relying only on character counts or punctuation, it attempts to identify changes in meaning between neighboring pieces of text. Two consecutive sentences may be placed in different chunks when their semantic content changes significantly. ## Embeddings",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 5,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "80275a24-8773-416a-9215-e442793e7039",
+        "chunk_id": "54bba50b-d9a4-442e-8e91-6f72d38f9535",
         "text": "may be placed in different chunks when their semantic content changes significantly. ## Embeddings After chunking, each chunk is converted into an embedding. An embedding is a numerical representation of text in a high-dimensional vector space. Texts with similar meanings should produce vectors that are relatively close to one another. For example, the question \"How can I install the database?\" may be semantically similar to a document chunk saying \"The database installation process begins by downloading the server package.\" The words are not identical, but the concepts are related.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 6,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "415a5506-54da-4181-82e4-4e6dafb34d8f",
+        "chunk_id": "e8bcc7a5-163d-4bd6-b7ae-24cda493cc34",
         "text": "The quality of an embedding model affects retrieval performance. A model that works well for general English text may not perform equally well on legal documents, medical terminology, source code, or multilingual content. Therefore, embedding models should be evaluated using representative queries and documents rather than selected only because they are popular. ## Vector databases",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 7,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "cefa8001-ba1a-4211-9a25-b36918055ff2",
+        "chunk_id": "cc348044-0164-4c5b-8af0-b887e6aab054",
         "text": "queries and documents rather than selected only because they are popular. ## Vector databases A vector database stores embeddings and allows the system to search for vectors that are similar to a query vector. Qdrant is one example of a vector database that can store vectors together with metadata. A stored vector should normally have enough metadata to identify where its text came from. Useful metadata may include a document identifier, chunk identifier, filename, page number, chunk index, file type, and chunking method. For example, suppose a document has the identifier DOC-001 and contains three chunks. The chunks might have identifiers CHUNK-001, CHUNK-002, and CHUNK-003. All three chunks should reference DOC-001. This relationship makes it possible to identify all chunks belonging to the same document. ## Retrieval",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 8,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "afdade60-9f72-4fdf-b6f4-73690d8dcda6",
+        "chunk_id": "0e55a178-3a74-45ed-9d54-8f53f16e33d6",
         "text": "relationship makes it possible to identify all chunks belonging to the same document. ## Retrieval When a user asks a question, the retrieval system searches the vector database for relevant chunks. The number of retrieved chunks is often called top-k. If top-k is five, the system attempts to retrieve the five most relevant results. Choosing top-k is not trivial.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 9,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "6b35147d-20aa-4fdb-9b53-dd2110359c7a",
+        "chunk_id": "50be751f-d836-470c-80a4-01fb0d482409",
         "text": "A very small value may cause the system to miss useful evidence. A very large value may introduce irrelevant information and increase the amount of context sent to the language model. Similarity scores can also be used to filter results. A system may retrieve the top twenty candidates and then discard results whose similarity score is below a defined threshold. ## Reranking\r\n\r\nInitial vector retrieval is not always sufficient. A reranker can examine the original query and retrieved chunks together and assign a more precise relevance score to each candidate. For example, a vector search might retrieve ten chunks because they discuss databases in general. A reranker may determine that only three of those chunks directly answer the user's question about database installation. The system can then provide those three chunks to the language model.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 10,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "478ba135-f34f-4f79-a0e0-05842af75911",
+        "chunk_id": "2c937673-2dda-43b0-a19c-22f762fb537d",
         "text": "This creates a two-stage retrieval architecture: the first stage emphasizes recall and retrieves a broad set of candidates, while the second stage emphasizes precision and selects the most useful results. ## Adaptive RAG\r\n\r\nA simple RAG system may use the same retrieval process for every question. An adaptive RAG system instead changes its behavior depending on the query.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 11,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "a284fdce-5b8c-40c4-b607-79cfb90c2bb5",
+        "chunk_id": "60a02097-6fbc-4e3e-aed7-045ec0620602",
         "text": "A straightforward factual question may require only one vector search. An ambiguous question may benefit from query rewriting. A complex question may need to be decomposed into multiple smaller questions. A question requiring precise evidence may benefit from hybrid retrieval and reranking. For example, the query \"What is the database installation procedure?\" may require normal retrieval. The query \"Compare the database installation requirements in the development and production environments\" is more complex because information may need to be retrieved from multiple parts of the knowledge base.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 12,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "72c849ca-f837-4c0b-8e19-366f523f3c9c",
+        "chunk_id": "2b3d58e2-2710-4b3e-9f68-d24adabac643",
         "text": "The purpose of adaptive RAG is not to make every query more complicated. The purpose is to use the simplest retrieval strategy that is likely to produce reliable evidence for the particular query. ## Evaluation\r\n\r\nA RAG system should not be evaluated only by asking whether the generated answer sounds good. Retrieval quality should also be measured independently.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 13,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "544a73dd-ff6e-4196-af57-6b937dffed0d",
+        "chunk_id": "8512e304-bc51-4fab-8bcf-c554d4c52283",
         "text": "Recall at K measures whether relevant documents or chunks appear among the first K retrieved results. Mean Reciprocal Rank, often abbreviated MRR, considers the position of the first relevant result. Other metrics can measure ranking quality and answer quality. A useful evaluation dataset contains questions, expected relevant documents or chunks, and optionally reference answers. The same dataset can be used to compare fixed-size chunking, recursive chunking, semantic chunking, hybrid retrieval, reranking, and adaptive retrieval.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 14,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     },
     {
-        "chunk_id": "80bc1161-804a-4e34-be5b-8ee1ee55c036",
+        "chunk_id": "0f50fbb3-628e-407f-bb14-b978b9878edc",
         "text": "## Example scenario\r\n\r\nImagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, \"What should I check when the database server fails to start after installation?\"\r\n\r\nA strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model. The final answer should be grounded in the retrieved evidence rather than relying only on the language model's general knowledge. Ideally, the answer should also identify the source document and page from which the evidence was retrieved. This example demonstrates why document parsing, chunking, embeddings, retrieval, metadata, reranking, and generation should be designed as separate but connected components.",
         "source": "test.txt",
         "file_type": "text",
         "page_number": 1,
         "chunk_index": 15,
         "method": "semantic",
-        "document_id": "8cc93bfc-2ed9-4925-9d3c-ec9770d7351c"
+        "document_id": "44572212-1cbe-43e0-8571-91e489b4f190"
     }
 ]

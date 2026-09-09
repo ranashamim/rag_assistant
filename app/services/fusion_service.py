@@ -6,7 +6,7 @@ def reciprocal_rank_fusion(result_lists, k=60):
 
         for rank, chunk in enumerate(results, start=1):
 
-            chunk_id = chunk["chunk_id"]
+            chunk_id = chunk.chunk.chunk_id
             fusion_score = 1 / (k + rank)
 
             if chunk_id not in fused_results:
@@ -28,8 +28,8 @@ def reciprocal_rank_fusion(result_lists, k=60):
     fused_chunks = []
 
     for chunk_id, data in sorted_results:
-        chunk = data["chunk"]
-        chunk["fusion_score"] = data["fusion_score"]
-        fused_chunks.append(chunk)
+        result = data["chunk"]
+        result.score = data["fusion_score"]
+        fused_chunks.append(result)
 
     return fused_chunks

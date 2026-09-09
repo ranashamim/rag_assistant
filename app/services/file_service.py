@@ -3,7 +3,8 @@ from pypdf import PdfReader
 import io
 import json
 
-from app.models.models import ParsedDocumentModel
+from app.models.models import ParsedDocumentModel, ChunkModel
+
 
 async def parse_document(file: UploadFile) -> ParsedDocumentModel:
     docs = {}
@@ -67,15 +68,19 @@ async def parse_document(file: UploadFile) -> ParsedDocumentModel:
         detail="Only .txt and .pdf files are supported."
     )
 
-def save_chunks_to_file(chunks: list):
-    json_str = json.dumps(chunks, indent=4)
+
+def save_chunks_to_file(chunks: list[ChunkModel]):
+    json_data = [chunk.model_dump() for chunk in chunks]
+    json_str = json.dumps(json_data, indent=4)
+
     with open("app/data/chunks/chunks.json", "w", encoding="utf-8") as f:
         f.write(json_str)
-    
+
     return "data is written."
 
-def read_chunks_file():
+def read_chunks_file() -> list[ChunkModel]:
     with open("app/data/chunks/chunks.json", "r", encoding="utf-8") as f:
-        data = json.load(f)
+        chunks = json.load(f)
+        
+    return [ChunkModel(**chunk) for chunk in chunks]
 
-    return data
