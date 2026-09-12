@@ -1,9 +1,22 @@
-from openai import OpenAI
 
-client = OpenAI(base_url="https://api.gapgpt.app/v1", api_key="sk-768E5nQEZXgTdFS9UfdtCh1UQuyB1jvuhxKS3aw4GQPt3Vql")
+def create_child_chunks(parent_text, child_size):
 
-response = client.chat.completions.create(
-    model="deepseek-v4-flash",
-    messages=[{"role": "user", "content": "سلام!"}]
-)
-print(response.choices[0].message.content)
+    if not parent_text:
+        return []
+
+    children_chunks = []
+
+    tokens = parent_text.split()
+
+    for start in range(0, len(tokens), child_size):
+        child_tokens = tokens[start:start + child_size]
+        child_chunk = " ".join(child_tokens)
+
+        if child_chunk.strip():
+            children_chunks.append(child_chunk)
+
+    return children_chunks
+
+
+
+print(create_child_chunks("one two three four five", 10))

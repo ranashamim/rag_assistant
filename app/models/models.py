@@ -22,6 +22,7 @@ class ChunkModel(BaseModel):
     chunk_index: int
     method: ChunkMethod
     document_id: str
+    parent_chunk_id: str | None = None
 
 class RetrievalResultModel(BaseModel):
     chunk: ChunkModel
