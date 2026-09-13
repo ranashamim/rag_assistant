@@ -7,3 +7,4 @@ class ChunkMethod(str, Enum):
     PUNCTUATION = "punctuation"
     RECURSIVE = "recursive"
     SEMANTIC = "semantic"
+    PARENT_CHILD = "parent_child"

@@ -27,3 +27,8 @@ class ChunkModel(BaseModel):
 class RetrievalResultModel(BaseModel):
     chunk: ChunkModel
     score: float
+
+class ParentChildRetrievalResultModel(BaseModel):
+    child: ChunkModel
+    parent: ChunkModel | None = None
+    score: float

@@ -22,12 +22,15 @@ async def to_db_vector(file, chunking_method):
         page_chunks = chunk_document(text= page.text, page_number= page.page_number, file_type= parsed_doc.file_type, document_id= document_id, source=parsed_doc.filename, method=chunking_method)
         chunks.extend(page_chunks)
 
-    embeddings = embed_documents([chunk.text for chunk in chunks])
+    child_chunks = [chunk for chunk in chunks if chunk.parent_chunk_id is not None]
+    print("Total chunks:", len(chunks))
+    print("Child chunks:", len(child_chunks))
+    embeddings = embed_documents([chunk.text for chunk in child_chunks])
 
     points = []
 
-    for chunk, embedding in zip(chunks, embeddings):
-
+    for chunk, embedding in zip(child_chunks, embeddings):
+        print("Points:", len(points))
         points.append(
             PointStruct(
                 id=chunk.chunk_id,

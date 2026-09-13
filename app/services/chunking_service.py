@@ -53,6 +53,79 @@ def create_child_chunks(parent_text, child_size):
 
     return children_chunks
 
+def create_parent_chunks(text, parent_size):
+    
+    if not text:
+        return []
+
+    parents_chunks = []
+
+    tokens = text.split()
+
+    for start in range(0, len(tokens), parent_size):
+        parent_tokens = tokens[start:start + parent_size]
+        parent_chunk = " ".join(parent_tokens)
+
+        if parent_chunk.strip():
+            parents_chunks.append(parent_chunk)
+
+    return parents_chunks
+
+
+def create_parent_child_chunks( text, page_number, source, file_type, method, document_id, parent_size, child_size):
+    output = []
+
+    parents_text = create_parent_chunks(
+        text,
+        parent_size=parent_size
+    )
+
+    for parent_index, parent in enumerate(parents_text):
+
+        parent_model = ChunkModel(
+            chunk_id=str(uuid.uuid4()),
+            text=parent,
+            source=source,
+            file_type=file_type,
+            page_number=page_number,
+            chunk_index=parent_index,
+            method=method,
+            document_id=document_id,
+            parent_chunk_id=None
+        )
+
+        output.append(parent_model)
+
+        child_texts = create_child_chunks(
+            parent_text=parent,
+            child_size=child_size
+        )
+
+        for i, child_text in enumerate(child_texts):
+            output.append(
+                ChunkModel(
+                    chunk_id=str(uuid.uuid4()),
+                    text=child_text,
+                    source=source,
+                    file_type=file_type,
+                    page_number=page_number,
+                    chunk_index=i,
+                    method=method,
+                    document_id=document_id,
+                    parent_chunk_id=parent_model.chunk_id
+                )
+            )
+
+    return output
+
+
+def get_parent_chunk(child, chunks):
+
+    for chunk in chunks:
+        if chunk.chunk_id == child.parent_chunk_id:
+            return chunk
+
+    return None
 
     
 # =====================================
@@ -412,6 +485,22 @@ def chunk_document(
                 text,
                 percentile=settings.semantic_chunk_percentile
             )
+
+    elif method == ChunkMethod.PARENT_CHILD:
+
+        chunks = create_parent_child_chunks(
+            text=text, 
+            page_number=page_number, 
+            source=source, 
+            file_type=file_type, 
+            method=method, 
+            document_id=document_id, 
+            parent_size=300, 
+            child_size=100
+        )
+
+        save_chunks_to_file(chunks)
+        return chunks
         
     else:
         raise ValueError(

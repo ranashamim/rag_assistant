@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
-from app.models.models import RetrievalResultModel
+from app.models.models import ParentChildRetrievalResultModel, RetrievalResultModel
 from app.services.bm25_service import build_bm25_index, search_bm25
+from app.services.chunking_service import get_parent_chunk
 from app.services.embeddings_service import embed_query
 from app.services.file_service import read_chunks_file
 
@@ -22,35 +23,39 @@ class DenseRetriever(Retriever):
     async def retrieve(self, query: str, limit: int = 10):
 
         query_embedding = embed_query(query)
-        
+
         results = client.query_points(
-            collection_name= settings.qdrant_collection_name,
+            collection_name=settings.qdrant_collection_name,
             query=query_embedding,
-            limit= limit
+            limit=limit
         )
-    
+
         chunks = read_chunks_file()
-    
+
         chunk_by_id = {
             chunk.chunk_id: chunk
             for chunk in chunks
         }
-    
+
         retrieved_chunks = []
-    
+
         for result in results.points:
             chunk_id = result.payload.get("chunk_id")
             chunk = chunk_by_id.get(chunk_id)
-    
+
             if chunk:
-                retrieved_chunks.append(
-                    RetrievalResultModel(
-                        chunk=chunk,
-                        score=result.score
-                    )
+                retrieval_result = RetrievalResultModel(
+                    chunk=chunk,
+                    score=result.score
                 )
-    
-    
+
+                expanded_result = expand_to_parent(
+                    retrieval_result,
+                    chunks
+                )
+
+                retrieved_chunks.append(expanded_result)
+
         return retrieved_chunks
         
 
@@ -77,4 +82,12 @@ class HybridRetriever(Retriever):
         return fused_results
 
 
+def expand_to_parent(result, chunks):
+    child = result.chunk
+    parent = get_parent_chunk(child, chunks)
 
+    return ParentChildRetrievalResultModel(
+        child=child,
+        parent=parent,
+        score=result.score
+    )
