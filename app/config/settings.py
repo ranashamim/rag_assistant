@@ -23,6 +23,9 @@ class Settings(BaseSettings):
 
     gap_api_key: str
 
+    parent_chunk_size: int
+    child_chunk_size: int
+
     model_config = SettingsConfigDict(
         env_file=".env"
     )

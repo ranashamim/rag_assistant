@@ -1,9 +1,10 @@
 from fastapi import APIRouter
 from app.services.file_service import read_chunks_file
 from app.services.generation_service import answer_query
+from app.services.parent_child_service import deduplicate_parents, expand_results, expand_to_parent, group_by_parent
 from app.services.retrieval_service import hybrid_retrieve
-from app.services.retriever import BM25Retriever, DenseRetriever, expand_to_parent
-from app.services.router_service import adaptive_retrieve
+from app.services.retriever import BM25Retriever, DenseRetriever
+from app.services.router_service import adaptive_retrieve, build_parent_child_context
 
 router = APIRouter(prefix="/retrieval", tags=["Query"])
 
@@ -18,16 +19,24 @@ async def retrieve_docs(query: str):
 @router.get("/test/{query}")
 async def evaulate(query: str):
 
+    chunks = read_chunks_file()
+
     dense = DenseRetriever()
+    results = await dense.retrieve(query, 5)
 
-    result = await dense.retrieve(query, 5)
-    resultt = result[0]
+    expanded_results = expand_results(
+        results,
+        chunks
+    )
 
-    print("Child:", resultt.child.text)
-    print("Parent:", resultt.parent.text)
-    print("Score:", resultt.score)
+    grouped_results = group_by_parent(
+        expanded_results
+    )
 
-    return resultt
+    context = build_parent_child_context(grouped_results)
+
+    print(context)
+    return context
 
     
 

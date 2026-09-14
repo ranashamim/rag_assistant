@@ -32,3 +32,8 @@ class ParentChildRetrievalResultModel(BaseModel):
     child: ChunkModel
     parent: ChunkModel | None = None
     score: float
+
+class ParentChildContextModel(BaseModel):
+    parent: ChunkModel
+    children: list[ChunkModel]
+    score: float

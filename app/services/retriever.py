@@ -1,15 +1,14 @@
 from abc import ABC, abstractmethod
 
-from app.models.models import ParentChildRetrievalResultModel, RetrievalResultModel
+from app.models.enums import ChunkMethod
+from app.models.models import RetrievalResultModel
 from app.services.bm25_service import build_bm25_index, search_bm25
-from app.services.chunking_service import get_parent_chunk
 from app.services.embeddings_service import embed_query
 from app.services.file_service import read_chunks_file
-
 from app.services.fusion_service import reciprocal_rank_fusion
 from app.services.qdrant_service import client
-
 from app.config.settings import settings
+
 
 class Retriever(ABC):
 
@@ -49,45 +48,51 @@ class DenseRetriever(Retriever):
                     score=result.score
                 )
 
-                expanded_result = expand_to_parent(
-                    retrieval_result,
-                    chunks
-                )
-
-                retrieved_chunks.append(expanded_result)
+                retrieved_chunks.append(retrieval_result)
 
         return retrieved_chunks
-        
+
 
 chunks = read_chunks_file()
 bm25_index = build_bm25_index(chunks)
 
+
 class BM25Retriever(Retriever):
 
     async def retrieve(self, query: str, limit: int = 10):
-            results = search_bm25(bm25= bm25_index, query=query, chunks=chunks, limit=limit)
-            return results
+        
+        chunks = read_chunks_file()
+
+        if settings.chunk_method == ChunkMethod.PARENT_CHILD:
+            chunks = [
+                chunk
+                for chunk in chunks
+                if chunk.parent_chunk_id is not None
+            ]
+
+        bm25_index = build_bm25_index(chunks)
+        results = search_bm25(
+            bm25=bm25_index,
+            query=query,
+            chunks=chunks,
+            limit=limit
+        )
+
+        return results
+
 
 class HybridRetriever(Retriever):
 
-     async def retrieve(self, query, limit = 10):
-            
+    async def retrieve(self, query, limit=10):
+
         bm25 = BM25Retriever()
         dense = DenseRetriever()
 
         semantic_results = await dense.retrieve(query, limit)
         bm25_results = await bm25.retrieve(query, limit)
-        fused_results = reciprocal_rank_fusion([semantic_results, bm25_results])
+
+        fused_results = reciprocal_rank_fusion(
+            [semantic_results, bm25_results]
+        )
 
         return fused_results
-
-
-def expand_to_parent(result, chunks):
-    child = result.chunk
-    parent = get_parent_chunk(child, chunks)
-
-    return ParentChildRetrievalResultModel(
-        child=child,
-        parent=parent,
-        score=result.score
-    )

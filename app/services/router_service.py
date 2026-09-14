@@ -174,3 +174,22 @@ def build_context(chunks):
         )
 
     return "\n\n".join(context_parts)
+
+
+
+def build_parent_child_context(results):
+    context_parts = []
+
+    for result in results:
+        child_texts = "\n".join(
+            child.text
+            for child in result.children
+        )
+
+        context_parts.append(
+            f"Source: {result.parent.source}\n"
+            f"Parent Text:\n{result.parent.text}\n"
+            f"Relevant Child Texts:\n{child_texts}"
+        )
+
+    return "\n\n".join(context_parts)

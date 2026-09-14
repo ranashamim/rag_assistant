@@ -495,8 +495,8 @@ def chunk_document(
             file_type=file_type, 
             method=method, 
             document_id=document_id, 
-            parent_size=300, 
-            child_size=100
+            parent_size=settings.parent_chunk_size,
+            child_size=settings.child_chunk_size
         )
 
         save_chunks_to_file(chunks)
