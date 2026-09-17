@@ -53,16 +53,15 @@ class DenseRetriever(Retriever):
         return retrieved_chunks
 
 
-chunks = read_chunks_file()
-bm25_index = build_bm25_index(chunks)
-
-
 class BM25Retriever(Retriever):
 
     async def retrieve(self, query: str, limit: int = 10):
         
         chunks = read_chunks_file()
 
+        if not chunks:
+            return []
+        
         if settings.chunk_method == ChunkMethod.PARENT_CHILD:
             chunks = [
                 chunk

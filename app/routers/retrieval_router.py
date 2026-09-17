@@ -21,22 +21,13 @@ async def evaulate(query: str):
 
     chunks = read_chunks_file()
 
-    dense = DenseRetriever()
-    results = await dense.retrieve(query, 5)
+    print("Total chunks in chunks.json:", len(chunks))
 
-    expanded_results = expand_results(
-        results,
-        chunks
-    )
+    for chunk in chunks:
+        print(chunk.source, chunk.chunk_id)
 
-    grouped_results = group_by_parent(
-        expanded_results
-    )
-
-    context = build_parent_child_context(grouped_results)
-
-    print(context)
-    return context
+    
+    return None
 
     
 

@@ -32,7 +32,6 @@ def build_chunk_objects(chunks, page_number, source, file_type, method, document
             )
         )
 
-    save_chunks_to_file(output)
     return output
 
 def create_child_chunks(parent_text, child_size):
@@ -499,7 +498,6 @@ def chunk_document(
             child_size=settings.child_chunk_size
         )
 
-        save_chunks_to_file(chunks)
         return chunks
         
     else:

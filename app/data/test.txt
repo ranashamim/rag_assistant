@@ -76,12 +76,4 @@ Recall at K measures whether relevant documents or chunks appear among the first
 
 A useful evaluation dataset contains questions, expected relevant documents or chunks, and optionally reference answers. The same dataset can be used to compare fixed-size chunking, recursive chunking, semantic chunking, hybrid retrieval, reranking, and adaptive retrieval.
 
-## Example scenario
 
-Imagine that an organization stores one hundred technical manuals in its knowledge base. An engineer asks, "What should I check when the database server fails to start after installation?"
-
-A strong RAG pipeline might first analyze the query, retrieve several candidate chunks from relevant manuals, rerank those chunks, preserve their document and page metadata, and finally provide the selected context to the language model.
-
-The final answer should be grounded in the retrieved evidence rather than relying only on the language model's general knowledge. Ideally, the answer should also identify the source document and page from which the evidence was retrieved.
-
-This example demonstrates why document parsing, chunking, embeddings, retrieval, metadata, reranking, and generation should be designed as separate but connected components.

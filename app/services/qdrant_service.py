@@ -1,5 +1,5 @@
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
+from qdrant_client.models import Distance, VectorParams, Filter, FieldCondition, MatchValue
 
 from app.config.settings import settings
 
@@ -34,3 +34,28 @@ def create_collection():
         print(
             f"Collection '{settings.qdrant_collection_name}' created."
         )
+
+def reset_collection():
+    if client.collection_exists(settings.qdrant_collection_name):
+        client.delete_collection(
+            collection_name=settings.qdrant_collection_name
+        )
+
+    create_collection()
+
+    print(
+        f"Collection '{settings.qdrant_collection_name}' reset."
+    )
+
+def delete_vectors_by_source(source: str):
+    client.delete(
+        collection_name=settings.qdrant_collection_name,
+        points_selector=Filter(
+            must=[
+                FieldCondition(
+                    key="source",
+                    match=MatchValue(value=source)
+                )
+            ]
+        )
+    )

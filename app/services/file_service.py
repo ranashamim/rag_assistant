@@ -71,12 +71,17 @@ async def parse_document(file: UploadFile) -> ParsedDocumentModel:
 
 def save_chunks_to_file(chunks: list[ChunkModel]):
     json_data = [chunk.model_dump() for chunk in chunks]
-    json_str = json.dumps(json_data, indent=4)
+
+    with open("app/data/chunks/chunks.json", "r", encoding="utf-8") as f:
+        existing_chunks = json.load(f)
+
+    all_chunks = existing_chunks + json_data
 
     with open("app/data/chunks/chunks.json", "w", encoding="utf-8") as f:
-        f.write(json_str)
+        json.dump(all_chunks, f, indent=4)
 
     return "data is written."
+
 
 def read_chunks_file() -> list[ChunkModel]:
     with open("app/data/chunks/chunks.json", "r", encoding="utf-8") as f:
@@ -84,3 +89,18 @@ def read_chunks_file() -> list[ChunkModel]:
         
     return [ChunkModel(**chunk) for chunk in chunks]
 
+def write_chunks_to_file(chunks: list[ChunkModel]):
+    json_data = [chunk.model_dump() for chunk in chunks]
+
+    with open("app/data/chunks/chunks.json", "w", encoding="utf-8") as f:
+        json.dump(json_data, f, indent=4)
+
+def delete_chunks_by_source(source: str):
+    chunks = read_chunks_file()
+
+    remaining_chunks = [
+        chunk for chunk in chunks
+        if chunk.source != source
+    ]
+
+    write_chunks_to_file(remaining_chunks)
