@@ -37,3 +37,15 @@ class ParentChildContextModel(BaseModel):
     parent: ChunkModel
     children: list[ChunkModel]
     score: float
+
+class MessageModel(BaseModel):
+    role: str
+    content: str
+
+class ConversationModel(BaseModel):
+    conversation_id: str
+    messages: list[MessageModel]
+
+class QueryRequest(BaseModel):
+    query: str
+    conversation_id: str

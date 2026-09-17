@@ -9,11 +9,10 @@ from app.services.router_service import adaptive_retrieve, build_parent_child_co
 router = APIRouter(prefix="/retrieval", tags=["Query"])
 
 
-@router.get("/get_query/{query}")
-async def retrieve_docs(query: str):
-    result = await answer_query(query)
+@router.get("/get_query/{conversation_id}/{query}")
+async def retrieve_docs(conversation_id: str, query: str):
+    result = await answer_query(query, conversation_id)
     return result
-
 
 
 @router.get("/test/{query}")

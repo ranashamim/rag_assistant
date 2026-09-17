@@ -1,4 +1,5 @@
 from app.models.enums import ChunkMethod
+from app.services.conversation_service import add_message, get_conversation
 from app.services.file_service import read_chunks_file
 from app.services.llm_service import generate_response
 from app.services.parent_child_service import expand_results, group_by_parent
@@ -35,7 +36,11 @@ def generate_answer(query, context):
     return response
 
 
-async def answer_query(query):
+async def answer_query(query, conversation_id):
+
+    conversation = get_conversation(conversation_id)
+    print("Conversation:", conversation)
+    
     result = await adaptive_retrieve(query)
 
     strategy = result["strategy"]
@@ -51,10 +56,11 @@ async def answer_query(query):
         print("others")
         context = build_context(chunks)
 
-    print("\n===== CONTEXT SENT TO LLM =====")
-    print(context)
-    print("================================\n")
+    
     response = generate_answer(query, context)
+
+    add_message(conversation_id, "user", query)
+    add_message(conversation_id, "assistant", response)
 
     return {
         "answer": response,
