@@ -7,30 +7,33 @@ from app.services.router_service import adaptive_retrieve, build_context, build_
 
 from app.config.settings import settings
 
-def generate_answer(query, context):
+def generate_answer(query, context, history=""):
 
     prompt = f"""
-            You are a helpful RAG assistant.
+        You are a helpful RAG assistant.
 
-            Answer the user's question using only the provided context.
-            If the context does not contain enough information to answer,
-            say that you don't have enough information.
-            When answering, cite the source of the information using
-            [Source: filename].
+        Answer the user's question using only the provided context.
+        If the context does not contain enough information to answer,
+        say that you don't have enough information.
+        When answering, cite the source of the information using
+        [Source: filename].
 
-            Use only the provided context.
-            Do not invent sources.
+        Use only the provided context.
+        Do not invent sources.
 
-            Context:
-            {context}
+        Conversation history:
+        {history}
 
-            Question:
-            {query}
+        Context:
+        {context}
 
-            Answer:
-    
-            Return ONLY the answer.
-            """
+        Question:
+        {query}
+
+        Answer:
+
+        Return ONLY the answer.
+    """
 
     response = generate_response(prompt=prompt)
     return response
@@ -39,7 +42,17 @@ def generate_answer(query, context):
 async def answer_query(query, conversation_id):
 
     conversation = get_conversation(conversation_id)
-    print("Conversation:", conversation)
+    history = ""
+
+    if conversation:
+        recent_messages = conversation.messages[-6:]
+        history = "\n".join(
+            f"{message.role}: {message.content}"
+            for message in recent_messages
+        )
+    
+    print("HISTORY SENT TO RETRIEVAL:")
+    print(history)
     
     result = await adaptive_retrieve(query)
 
@@ -57,7 +70,7 @@ async def answer_query(query, conversation_id):
         context = build_context(chunks)
 
     
-    response = generate_answer(query, context)
+    response = generate_answer(query, context, history)
 
     add_message(conversation_id, "user", query)
     add_message(conversation_id, "assistant", response)

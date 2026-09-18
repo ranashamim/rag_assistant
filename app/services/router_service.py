@@ -92,36 +92,49 @@ async def retrieve_decomposed(query: str, final_limit=3):
         reverse=True
     )[:final_limit]
 
-def rewrite_query(query: str, context: str = ""):
+
+def rewrite_query(query: str, history: str = ""):
 
     prompt = f"""
-        Rewrite the user's query into a clear, self-contained question
-        for document retrieval.
+    Rewrite the user's query into a clear, self-contained question
+    for document retrieval.
 
-        Use ONLY information explicitly present in the user query
-        and the provided context.
+    IMPORTANT:
+    The current query may contain references such as:
+    "it", "this", "that", "they", "these", "those", "its", or similar
+    words that refer to something mentioned earlier in the conversation.
 
-        Do NOT invent a topic, entity, or subject that is not present
-        in the query or context.
+    If such a reference exists, identify what it refers to using the
+    conversation history and replace the reference with the specific topic.
 
-        If the query cannot be rewritten without missing information,
-        return the original query unchanged.
+    The rewritten query MUST be understandable without reading
+    the conversation history.
 
-        Context:
-        {context}
+    Use ONLY information explicitly present in the current query
+    and conversation history.
 
-        User query:
-        {query}
+    Do NOT invent any topic, entity, or subject.
 
-        Return ONLY the rewritten question.
-        """
+    If the query is already self-contained, keep its meaning unchanged.
+
+    If the reference cannot be resolved from the conversation history,
+    return the original query unchanged.
+
+    Conversation history:
+    {history}
+
+    Current user query:
+    {query}
+
+    Return ONLY the rewritten question.
+    """
 
     response = generate_response(prompt=prompt)
 
     return response.strip()
 
 
-async def adaptive_retrieve(query: str, context: str = ""):
+async def adaptive_retrieve(query: str, history: str = ""):
 
     routing = route_query(query)
     strategy = routing["strategy"]
@@ -143,7 +156,10 @@ async def adaptive_retrieve(query: str, context: str = ""):
     elif strategy == "rewrite":
         print("***************")
         print(strategy)
-        rewritten_query = rewrite_query(query, context)
+        rewritten_query = rewrite_query(query, history)
+
+    
+        print("REWRITTEN QUERY:", rewritten_query)
 
         reranked_chunks = await hybrid_retrieve(
             rewritten_query,
