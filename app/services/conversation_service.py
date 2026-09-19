@@ -1,76 +1,58 @@
 
-from pydantic import BaseModel
-#from app.models.models import ConversationModel, MessageModel
+from datetime import datetime
 
-
-class MessageModel(BaseModel):
-    role: str
-    content: str
-
-class ConversationModel(BaseModel):
-    conversation_id: str
-    messages: list[MessageModel]
+from app.database.database import SessionLocal
+from app.database.models import Conversation, Message
 
 conversations = {}
 
 def get_conversation(conversation_id):
-    return conversations.get(conversation_id)
+    
+    db=SessionLocal()
+    conversation=db.get(Conversation, conversation_id)
+
+    if conversation:
+        conversation.messages
+    else:
+        conversation = Conversation(
+            conversation_id=conversation_id,
+            created_at=datetime.now()
+        )
+        db.add(conversation)
+
+    db.close()
+
+    return conversation
 
         
 def add_message(conversation_id, role, content):
+    db = SessionLocal()
+    conversation = db.get(Conversation, conversation_id)
 
-    if conversation_id in conversations:
-        conversation = conversations[conversation_id]
-
-        conversation.messages.append(
-            MessageModel(
-                role=role,
-                content=content
-            )
-        )
-    else:
-        message = MessageModel(
+    if conversation:
+        
+        message = Message(
             role=role,
-            content=content
+            content=content,
+            created_at=datetime.now()
+        )
+        conversation.messages.append(message)
+    else:
+        message = Message(
+            role=role,
+            content=content,
+            created_at=datetime.now()
         )
 
-        conversation = ConversationModel(
+        conversation = Conversation(
             conversation_id=conversation_id,
-            messages=[message]
+            created_at=datetime.now()
         )
 
-        conversations[conversation_id] = conversation
+        conversation.messages.append(message)
+        db.add(conversation)
+    db.commit()
+    db.close()
+        
 
 
-
-
-# 1. Conversation doesn't exist yet
-conversation = get_conversation("abc")
-
-print("Before:", conversation)
-
-
-# 2. Add first user message
-add_message("abc", "user", "What is RAG?")
-
-print("After first message:")
-print(get_conversation("abc"))
-
-
-# 3. Add assistant message
-add_message("abc", "assistant", "RAG stands for Retrieval-Augmented Generation.")
-
-print("After assistant message:")
-print(get_conversation("abc"))
-
-
-# 4. Add another user message
-add_message("abc", "user", "Why do we use embeddings?")
-
-print("After second user message:")
-print(get_conversation("abc"))
-
-
-# 5. Check a different conversation
-print("Other conversation:")
-print(get_conversation("xyz"))

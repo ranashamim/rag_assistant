@@ -42,6 +42,7 @@ def generate_answer(query, context, history=""):
 async def answer_query(query, conversation_id):
 
     conversation = get_conversation(conversation_id)
+ 
     history = ""
 
     if conversation:
@@ -54,7 +55,7 @@ async def answer_query(query, conversation_id):
     print("HISTORY SENT TO RETRIEVAL:")
     print(history)
     
-    result = await adaptive_retrieve(query)
+    result = await adaptive_retrieve(query, history)
 
     strategy = result["strategy"]
     chunks = result["chunks"]
