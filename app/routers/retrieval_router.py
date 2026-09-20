@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from app.services.conversation_service import get_conversation
 from app.services.file_service import read_chunks_file
 from app.services.generation_service import answer_query
 from app.services.parent_child_service import deduplicate_parents, expand_results, expand_to_parent, group_by_parent
@@ -18,15 +19,10 @@ async def retrieve_docs(conversation_id: str, query: str):
 @router.get("/test/{query}")
 async def evaulate(query: str):
 
-    chunks = read_chunks_file()
-
-    print("Total chunks in chunks.json:", len(chunks))
-
-    for chunk in chunks:
-        print(chunk.source, chunk.chunk_id)
+    r = get_conversation(query)
 
     
-    return None
+    return r
 
     
 
