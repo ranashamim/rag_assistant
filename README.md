@@ -476,3 +476,7 @@ Conversation history is handled by the conversation/database layer rather than b
 # Learning Goals
 
 This project was built as a practical exploration of advanced RAG concepts.
+
+<img width="1536" height="1024" alt="diagram" src="https://github.com/user-attachments/assets/b0b71f0c-d32e-499f-89a4-2e6b62afda0b" />
+
+
