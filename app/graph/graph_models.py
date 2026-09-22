@@ -12,3 +12,8 @@ class Relationship(BaseModel):
     source: str
     target: str
     relationship: str
+
+
+class ExtractedEntity(BaseModel):
+    name: str
+    entity_type: str
