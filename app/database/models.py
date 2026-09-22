@@ -24,5 +24,24 @@ class Conversation(Base):
     messages = relationship("Message", back_populates="conversation")
 
 
+class Entity(Base):
+    __tablename__ = "entities"
+    entity_id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[str] = mapped_column(String)
+    entity_type: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    
+
+class GraphRelationship(Base):
+    __tablename__ = "relationships"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    source_entity_id: Mapped[str] = mapped_column(ForeignKey("entities.entity_id"))
+    target_entity_id: Mapped[str] = mapped_column(ForeignKey("entities.entity_id"))
+    relationship: Mapped[str] = mapped_column(String)
+    chunk_id: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+
+
+
 
 

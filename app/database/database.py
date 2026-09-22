@@ -15,25 +15,3 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 Base.metadata.create_all(engine)
-
-#db = SessionLocal()
-
-#conversation = db.get(Conversation, "abc")
-
-#message = Message(
-#    role="user",
-#    content="What is RAG?",
-#    created_at=datetime.now()
-#)
-
-#conversation.messages.append(message)
-
-#db.commit()
-
-#for message in conversation.messages:
-#    print(f"{message.role}: {message.content}")
-    
-#db.close()
-
-
-  
