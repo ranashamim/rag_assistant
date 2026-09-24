@@ -1,0 +1,7 @@
+Microsoft is a technology company founded by Bill Gates and Paul Allen.
+
+Microsoft acquired LinkedIn in 2016. LinkedIn is a professional networking platform.
+
+Microsoft acquired GitHub in 2018. GitHub is a software development platform used by developers around the world.
+
+GitHub created GitHub Copilot, an AI coding assistant that helps developers write and understand code.

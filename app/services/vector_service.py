@@ -3,6 +3,9 @@ from qdrant_client.models import PointStruct
 
 import uuid
 
+from app.graph.graph import Graph
+from app.graph.graph_extractor import GraphExtractor
+from app.graph.graph_repository import save_graph
 from app.models.enums import ChunkMethod
 from app.services.chunking_service import chunk_document
 from app.services.embeddings_service import embed_documents
@@ -25,6 +28,17 @@ async def to_db_vector(file, chunking_method):
     for page in parsed_doc.pages:
         page_chunks = chunk_document(text= page.text, page_number= page.page_number, file_type= parsed_doc.file_type, document_id= document_id, source=parsed_doc.filename, method=chunking_method)
         chunks.extend(page_chunks)
+
+    #graph RAG
+    graph_extractor = GraphExtractor()
+    graph = Graph()
+
+    for chunk in chunks:
+        graph_extractor.build_graph(graph=graph, chunk=chunk)
+
+    save_graph(graph)
+
+
 
     if chunking_method == ChunkMethod.PARENT_CHILD:
         retrieval_chunks = [ chunk for chunk in chunks if chunk.parent_chunk_id is not None]

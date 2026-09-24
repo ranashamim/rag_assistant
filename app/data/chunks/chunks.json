@@ -229,5 +229,27 @@
         "method": "parent_child",
         "document_id": "c063ad91-4b6b-4939-81c4-850919648600",
         "parent_chunk_id": "c8d5d72f-2653-46cc-b610-06a5f8e8e637"
+    },
+    {
+        "chunk_id": "85031c80-3967-4c38-8cc7-61dff07dacf2",
+        "text": "Microsoft is a technology company founded by Bill Gates and Paul Allen. Microsoft acquired LinkedIn in 2016. LinkedIn is a professional networking platform. Microsoft acquired GitHub in 2018. GitHub is a software development platform used by developers around the world. GitHub created GitHub Copilot, an AI coding assistant that helps developers write and understand code.",
+        "source": "companies.txt",
+        "file_type": "text",
+        "page_number": 1,
+        "chunk_index": 0,
+        "method": "parent_child",
+        "document_id": "da5b2f78-81a4-4bad-8d2e-562f6a3a9ebb",
+        "parent_chunk_id": null
+    },
+    {
+        "chunk_id": "8337f74b-628a-4f92-b05a-f657e1bcc971",
+        "text": "Microsoft is a technology company founded by Bill Gates and Paul Allen. Microsoft acquired LinkedIn in 2016. LinkedIn is a professional networking platform. Microsoft acquired GitHub in 2018. GitHub is a software development platform used by developers around the world. GitHub created GitHub Copilot, an AI coding assistant that helps developers write and understand code.",
+        "source": "companies.txt",
+        "file_type": "text",
+        "page_number": 1,
+        "chunk_index": 0,
+        "method": "parent_child",
+        "document_id": "da5b2f78-81a4-4bad-8d2e-562f6a3a9ebb",
+        "parent_chunk_id": "85031c80-3967-4c38-8cc7-61dff07dacf2"
     }
 ]
