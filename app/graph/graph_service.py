@@ -1,24 +1,82 @@
 from app.graph.graph import Graph
 from app.graph.graph_extractor import GraphExtractor
+from app.models.models import ChunkModel
+from app.models.enums import ChunkMethod
+
+from app.database.database import SessionLocal
+from app.database.models import Entity as DBEntity
+from app.database.models import GraphRelationship
+from sqlalchemy import select
+
+def test_build_graph():
+
+    chunk = ChunkModel(
+        chunk_id="test-chunk-1",
+        text=(
+            "Microsoft acquired GitHub in 2018. "
+            "GitHub created GitHub Copilot."
+        ),
+        source="test.txt",
+        file_type="txt",
+        page_number=1,
+        chunk_index=0,
+        method=ChunkMethod.FIXED,
+        document_id="test-document-1"
+    )
+
+    graph = Graph()
+    extractor = GraphExtractor()
+
+    graph1 = extractor.build_graph(
+        graph=graph,
+        chunk=chunk
+    )
 
 
-text = """
-Microsoft acquired GitHub in 2018.
-GitHub later created GitHub Copilot.
-GitHub Copilot is an AI-powered coding assistant.
-"""
+    print("\nENTITIES:")
+    for entity in graph1.entities.values():
+        print(
+            entity.entity_id,
+            entity.name,
+            entity.entity_type
+        )
 
-extractor = GraphExtractor()
-graph = Graph()
+    print("\nRELATIONSHIPS:")
+    for relationship in graph1.relationships:
+        print(
+            relationship.source,
+            relationship.target,
+            relationship.relationship
+        )
 
-graph = extractor.build_graph(text, graph)
+    db = SessionLocal()
 
+    entities = db.execute(
+        select(DBEntity)
+    ).scalars().all()
 
-microsoft = graph.get_entity_by_name("Microsoft")
+    relationships = db.execute(
+        select(GraphRelationship)
+    ).scalars().all()
 
-relationships = graph.get_related_relationships(
-    microsoft.entity_id
-)
+    print("\nDATABASE ENTITIES:")
+    for entity in entities:
+        print(
+            entity.entity_id,
+            entity.name,
+            entity.entity_type
+        )
 
-for relationship in relationships:
-    print(relationship)
+    print("\nDATABASE RELATIONSHIPS:")
+    for relationship in relationships:
+        print(
+            relationship.source_entity_id,
+            relationship.target_entity_id,
+            relationship.relationship,
+            relationship.chunk_id
+        )
+
+    db.close()
+
+if __name__ == "__main__":
+    test_build_graph()

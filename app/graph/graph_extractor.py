@@ -1,8 +1,9 @@
 import json
-import uuid
 
 from app.graph.graph import Graph
 from app.graph.graph_models import Entity, ExtractedEntity, Relationship
+from app.graph.graph_repository import add_entity, add_relationship
+from app.models.models import ChunkModel
 from app.services.llm_service import generate_response
 
 
@@ -51,8 +52,9 @@ class GraphExtractor:
         entities = []
 
         for extracted_entity in extracted_entities:
-            entity = Entity(entity_id=str(uuid.uuid4()), name=extracted_entity.name, entity_type=extracted_entity.entity_type)
-            entities.append(entity)
+            db_entity = add_entity(name=extracted_entity.name, entity_type=extracted_entity.entity_type)
+            graph_entity = Entity(entity_id=db_entity.entity_id, name=db_entity.name, entity_type=db_entity.entity_type)
+            entities.append(graph_entity)
 
         return entities
 
@@ -110,21 +112,34 @@ class GraphExtractor:
 
         return extracted_relationships
 
-    def build_graph(self, text: str, graph: Graph):
+    def build_graph(self, graph: Graph, chunk: ChunkModel):
         
-        extracted_entities = self.extract_entities(text=text)
+        extracted_entities = self.extract_entities(text=chunk.text)
         entities = self.create_entities(extracted_entities=extracted_entities)
 
         for entity in entities:
             graph.add_entity_if_not_exists(entity)
 
-        extracted_relationships = self.extract_relationships(text=text, entities=extracted_entities)
+        extracted_relationships = self.extract_relationships(text=chunk.text, entities=extracted_entities)
         for relationship in extracted_relationships:
-            graph.add_relationship_by_name(
+
+            new_relationship = add_relationship(
                 source_name=relationship.source,
                 target_name=relationship.target,
-                relationship=relationship.relationship
+                relationship=relationship.relationship,
+                chunk_id=chunk.chunk_id
             )
+
+            if new_relationship is None:
+                continue
+
+            graph_relationship = Relationship(
+                source=new_relationship.source_entity_id,
+                target=new_relationship.target_entity_id,
+                relationship=new_relationship.relationship
+            )
+
+            graph.add_relationship(graph_relationship)
 
         return graph
 
