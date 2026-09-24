@@ -105,6 +105,47 @@ LLM
 
 This allows retrieval to remain precise while generation receives richer surrounding context.
 
+### Graph RAG
+
+The project also includes a lightweight Graph RAG pipeline for questions that depend on relationships between entities.
+
+During document ingestion, an LLM extracts entities and relationships from document chunks and stores them in a graph structure backed by SQLite.
+
+At query time, the adaptive router can select Graph RAG for relationship-based questions. The system extracts entities from the query, finds the corresponding entities in the graph, and traverses their relationships to retrieve relevant information.
+
+```text
+Document
+   ↓
+Chunk
+   ↓
+Entity & Relationship Extraction
+   ↓
+Graph
+   ↓
+SQLite
+```
+
+For graph-based queries:
+
+```text
+User Query
+   ↓
+Adaptive Router
+   ↓
+Graph Retrieval
+   ↓
+Entity Extraction
+   ↓
+Graph Traversal
+   ↓
+Graph Context
+   ↓
+LLM
+```
+
+Graph RAG complements vector retrieval by representing explicit relationships between entities and enabling multi-hop retrieval.
+
+
 ### Conversation History
 
 Conversation history is persisted using:
