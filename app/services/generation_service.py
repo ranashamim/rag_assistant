@@ -60,7 +60,7 @@ async def answer_query(query, conversation_id):
     strategy = result["strategy"]
     chunks = result["chunks"]
 
-    if settings.chunk_method == ChunkMethod.PARENT_CHILD:
+    if (settings.chunk_method == ChunkMethod.PARENT_CHILD and strategy != "graph_retrieval"):
         print("parent_child")
         all_chunks = read_chunks_file()
         expanded = expand_results(chunks, all_chunks)
@@ -69,7 +69,7 @@ async def answer_query(query, conversation_id):
     else:
         print("others")
         context = build_context(chunks)
-
+      
     
     response = generate_answer(query, context, history)
 

@@ -1,9 +1,11 @@
+from app.models.models import GraphRetrievalResultModel, RetrievalResultModel
 from app.services.llm_service import generate_response
 
 import json
 
 from app.services.query_transformation_service import retrieve_multi_query
 from app.services.retrieval_service import hybrid_retrieve
+from app.services.retriever import GraphRetriever
 
 def route_query(query: str):
 
@@ -17,12 +19,15 @@ def route_query(query: str):
     - complex: a question requiring multiple pieces of information, comparison, or multiple reasoning steps.
     - ambiguous: a question that is unclear or depends on missing context.
     - broad: a clear question where different formulations or terminology may retrieve different relevant information.
+    - graph: a question that depends on relationships between entities,such as who acquired whom, who created what, what is connected to what,
+      or questions requiring traversal across multiple entity relationships.
 
     Choose the strategy based on these rules:
     - simple -> normal_retrieval
     - complex -> decomposition
     - ambiguous -> rewrite
     - broad -> multi_query
+    - graph -> graph_retrieval
     
     Return ONLY valid JSON in this exact format:
     {{
@@ -172,25 +177,48 @@ async def adaptive_retrieve(query: str, history: str = ""):
         print(strategy)
         reranked_chunks = await retrieve_multi_query(query)
 
+    elif strategy == "graph_retrieval":
+        print("***************")
+        print(strategy)
+
+        graph_retriever = GraphRetriever()
+
+        graph_results = await graph_retriever.retrieve(
+            query,
+            limit=10
+        )
+        reranked_chunks = graph_results
+
+
     return {
         "query_type": query_type,
         "strategy": strategy,
         "chunks": reranked_chunks
     }
 
-
-def build_context(chunks):
+def build_context(results):
 
     context_parts = []
 
-    for chunk in chunks:
-        context_parts.append(
-            f"Source: {chunk.chunk.source}\n"
-            f"Content: {chunk.chunk.text}"
-        )
+    for result in results:
+
+        if isinstance(result, RetrievalResultModel):
+            context_parts.append(
+                f"Source: {result.chunk.source}\n"
+                f"Content: {result.chunk.text}"
+            )
+
+        elif isinstance(result, GraphRetrievalResultModel):
+            context_parts.append(
+                f"Graph relationship:\n"
+                f"{result.source_name} "
+                f"({result.source_type}) "
+                f"{result.relationship} "
+                f"{result.target_name} "
+                f"({result.target_type})"
+            )
 
     return "\n\n".join(context_parts)
-
 
 
 def build_parent_child_context(results):

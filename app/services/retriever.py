@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod
 
+from app.graph.graph_extractor import GraphExtractor
+from app.graph.graph_repository import get_entity_by_id, get_entity_by_name, get_relationships, traverse_from_database
 from app.models.enums import ChunkMethod
-from app.models.models import RetrievalResultModel
+from app.models.models import GraphRetrievalResultModel, RetrievalResultModel
 from app.services.bm25_service import build_bm25_index, search_bm25
 from app.services.embeddings_service import embed_query
 from app.services.file_service import read_chunks_file
@@ -95,3 +97,63 @@ class HybridRetriever(Retriever):
         )
 
         return fused_results
+
+class GraphRetriever(Retriever):
+
+    async def retrieve(self, query: str, limit: int = 10):
+        retrieved_results = []
+
+        graph_extractor = GraphExtractor()
+
+        entities = graph_extractor.extract_entities(
+            text=query
+        )
+
+        if not entities:
+            return []
+
+        unique_entities = {}
+
+        for entity in entities:
+            key = entity.name.lower()
+
+            if key not in unique_entities:
+                unique_entities[key] = entity
+
+        entities = list(unique_entities.values())
+
+        for entity in entities:
+
+            db_entity = get_entity_by_name(entity.name)
+
+            if db_entity is None:
+                continue
+
+            traversal_results = traverse_from_database(
+                entity_id=db_entity.entity_id,
+                max_hops=2
+            )
+
+            for current_entity, relationship, neighbor in traversal_results:
+
+                if relationship.source_entity_id == current_entity.entity_id:
+                    source = current_entity
+                    target = neighbor
+                else:
+                    source = neighbor
+                    target = current_entity
+
+                result = GraphRetrievalResultModel(
+                    source_name=source.name,
+                    source_type=source.entity_type,
+                    target_name=target.name,
+                    target_type=target.entity_type,
+                    relationship=relationship.relationship
+                )
+
+                retrieved_results.append(result)
+
+                if len(retrieved_results) >= limit:
+                    return retrieved_results
+
+        return retrieved_results

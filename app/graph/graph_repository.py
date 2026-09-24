@@ -4,7 +4,7 @@ import uuid
 from app.database.database import SessionLocal
 from app.database.models import Entity, GraphRelationship
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select
 
 from app.graph.graph import Graph
 
@@ -163,3 +163,109 @@ def save_graph(graph: Graph):
 
     finally:
         db.close()
+
+
+def get_entity_by_name(name):
+
+    db = SessionLocal()
+
+    try:
+        statement = select(Entity).where(
+            func.lower(Entity.name) == name.lower()
+        )
+
+        result = db.execute(statement)
+        db_entity = result.scalar_one_or_none()
+
+        return db_entity
+
+    finally:
+        db.close()
+
+        
+def get_relationships(entity_id):
+    db = SessionLocal()
+
+    try:
+        statement = select(GraphRelationship).where(
+            or_(
+                GraphRelationship.source_entity_id == entity_id,
+                GraphRelationship.target_entity_id == entity_id
+            )
+        )
+
+        result = db.execute(statement)
+        db_relationships = result.scalars().all()
+
+        return db_relationships
+
+    finally:
+        db.close()
+
+def get_entity_by_id(entity_id):
+
+    db = SessionLocal()
+
+    try:
+        statement = select(Entity).where(
+            Entity.entity_id == entity_id
+        )
+
+        result = db.execute(statement)
+        db_entity = result.scalar_one_or_none()
+
+        return db_entity
+
+    finally:
+        db.close()
+
+def traverse_from_database(entity_id: str, max_hops: int = 2):
+    frontier = [entity_id]
+    visited = {entity_id}
+    results = []
+
+    while frontier and max_hops > 0:
+        next_frontier = []
+
+        for current_entity_id in frontier:
+            current_entity = get_entity_by_id(current_entity_id)
+
+            if current_entity is None:
+                continue
+
+            relationships = get_relationships(current_entity_id)
+
+            for relationship in relationships:
+
+                if relationship.source_entity_id == current_entity_id:
+                    neighbor_id = relationship.target_entity_id
+                else:
+                    neighbor_id = relationship.source_entity_id
+
+                if neighbor_id in visited:
+                    continue
+
+                neighbor = get_entity_by_id(neighbor_id)
+
+                if neighbor is None:
+                    continue
+
+                visited.add(neighbor_id)
+
+                results.append(
+                    (
+                        current_entity,
+                        relationship,
+                        neighbor
+                    )
+                )
+
+                next_frontier.append(neighbor_id)
+
+        frontier = next_frontier
+        max_hops -= 1
+
+    return results
+
+
+

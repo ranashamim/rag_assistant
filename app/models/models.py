@@ -49,3 +49,10 @@ class ConversationModel(BaseModel):
 class QueryRequest(BaseModel):
     query: str
     conversation_id: str
+
+class GraphRetrievalResultModel(BaseModel):
+    source_name: str
+    source_type: str
+    target_name: str
+    target_type: str
+    relationship: str
